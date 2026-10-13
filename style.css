@@ -1,0 +1,495 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #031b4e, #0755b8, #29a9ff);
+    color: white;
+}
+
+#splash {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #031b4e, #0755b8, #29a9ff);
+    animation: desaparecer 1s ease 3s forwards;
+}
+
+.logo {
+    width: 125px;
+    height: 125px;
+    border-radius: 30px;
+    object-fit: cover;
+    box-shadow: 0 15px 40px rgba(0,0,0,.3);
+    margin-bottom: 20px;
+}
+
+.splash-title {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.splash-subtitle {
+    margin-top: 5px;
+    opacity: .8;
+}
+
+@keyframes desaparecer {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+.app {
+    width: 100%;
+    max-width: 1050px;
+    margin: auto;
+    padding: 25px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.card {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.18);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.18);
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+h2 {
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    opacity: .8;
+    margin-bottom: 25px;
+}
+
+/* ================= REGISTRO ================= */
+
+#registerScreen {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-card {
+    width: 100%;
+    max-width: 600px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 13px;
+    padding: 13px 15px;
+    background: rgba(255,255,255,.93);
+    color: #123;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.main-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    background: white;
+    color: #0755b8;
+    font-weight: 700;
+    font-size: 16px;
+    transition: .2s;
+}
+
+.main-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,.2);
+}
+
+/* ================= TIPO USUARIO ================= */
+
+.user-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.user-option {
+    position: relative;
+}
+
+.user-option input {
+    display: none;
+}
+
+.user-option label {
+    margin: 0;
+    padding: 15px;
+    text-align: center;
+    border-radius: 14px;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.user-option input:checked + label {
+    background: white;
+    color: #0755b8;
+}
+
+/* ================= HEADER ================= */
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.small-logo {
+    width: 55px;
+    height: 55px;
+    border-radius: 16px;
+    object-fit: cover;
+}
+
+.logout {
+    background: rgba(255,255,255,.15);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 12px;
+}
+
+/* ================= PERFIL ================= */
+
+.welcome {
+    margin-bottom: 22px;
+}
+
+.welcome p {
+    opacity: .8;
+}
+
+.course-badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 7px 13px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.16);
+}
+
+/* ================= DASHBOARD ================= */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat {
+    padding: 20px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.1);
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.stat-label {
+    opacity: .75;
+    font-size: 14px;
+}
+
+/* ================= TAREAS ================= */
+
+.task-list {
+    display: grid;
+    gap: 15px;
+    margin-top: 18px;
+}
+
+.task {
+    position: relative;
+    padding: 20px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.1);
+    border-left: 5px solid #55c7ff;
+}
+
+.task.urgent {
+    border-left-color: #ff5b6e;
+}
+
+.task.medium {
+    border-left-color: #ffc857;
+}
+
+.task.easy {
+    border-left-color: #4ee19b;
+}
+
+.task.completed {
+    opacity: .55;
+}
+
+.task.completed .task-title {
+    text-decoration: line-through;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.task-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.task-type {
+    font-size: 12px;
+    padding: 5px 9px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.15);
+}
+
+.task-description {
+    margin: 9px 0;
+    opacity: .8;
+}
+
+.task-date {
+    font-size: 14px;
+    opacity: .8;
+}
+
+.priority {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.priority.urgent {
+    background: rgba(255,91,110,.2);
+    color: #ffb5be;
+}
+
+.priority.medium {
+    background: rgba(255,200,87,.2);
+    color: #ffe39a;
+}
+
+.priority.easy {
+    background: rgba(78,225,155,.2);
+    color: #a5f4d0;
+}
+
+.complete-btn {
+    margin-top: 12px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: white;
+    color: #0755b8;
+    font-weight: 600;
+}
+
+/* ================= ADMIN ================= */
+
+.add-btn {
+    padding: 12px 18px;
+    border-radius: 13px;
+    background: white;
+    color: #0755b8;
+    font-weight: 700;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+/* ================= MODAL ================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0,0,0,.55);
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 550px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.cancel-btn {
+    width: 50%;
+    padding: 13px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.15);
+    color: white;
+}
+
+.save-btn {
+    width: 50%;
+    padding: 13px;
+    border-radius: 12px;
+    background: white;
+    color: #0755b8;
+    font-weight: 700;
+}
+
+/* ================= FRASE ================= */
+
+.quote {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 18px;
+    text-align: center;
+    background: rgba(255,255,255,.08);
+    font-style: italic;
+    opacity: .9;
+}
+
+/* ================= LOGIN ================= */
+
+#loginScreen {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.switch-text {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 14px;
+}
+
+.link-btn {
+    background: none;
+    border: none;
+    color: white;
+    text-decoration: underline;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:650px) {
+
+    .app {
+        padding: 15px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: auto;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        align-items: flex-start;
+    }
+
+    .admin-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    h1 {
+        font-size: 27px;
+    }
+}

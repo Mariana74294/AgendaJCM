@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda Estudiantil | U.E. José Clemente Maurer</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= SPLASH ================= -->
+
+<div id="splash">
+
+    <img
+    
+        class="logo"
+        src="Logo.jpeg"
+        alt="Logo Agenda Estudiantil"
+    >
+
+    <div class="splash-title">Agenda Estudiantil</div>
+    <div class="splash-subtitle">
+        U.E. José Clemente Maurer
+    </div>
+
+</div>
+
+
+<div class="app">
+
+<!-- ================= REGISTRO ================= -->
+
+<section id="registerScreen">
+
+<div class="card register-card">
+
+<h1>Crear cuenta ✨</h1>
+
+<p class="subtitle">
+    Organiza tus actividades y mantén todo en un solo lugar.
+</p>
+
+<form id="registerForm">
+
+<div class="form-grid">
+
+<div class="form-group full">
+<label>Nombre completo</label>
+<input
+    id="nombre"
+    type="text"
+    placeholder="Escribe tu nombre completo"
+    required
+>
+</div>
+
+<div class="form-group">
+<label>Usuario</label>
+<input
+    id="usuario"
+    type="text"
+    placeholder="Ej. maria123"
+    required
+>
+</div>
+
+<div class="form-group">
+<label>Correo electrónico</label>
+<input
+    id="correo"
+    type="email"
+    placeholder="correo@ejemplo.com"
+    required
+>
+</div>
+
+<div class="form-group">
+<label>Curso</label>
+<select id="curso" required>
+    <option value="">Seleccionar curso</option>
+    <option>1ro</option>
+    <option>2do</option>
+    <option>3ro</option>
+    <option>4to</option>
+    <option>5to</option>
+    <option>6to</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Paralelo</label>
+<select id="paralelo" required>
+    <option value="">Seleccionar paralelo</option>
+    <option>A</option>
+    <option>B</option>
+    <option>C</option>
+</select>
+</div>
+
+<div class="form-group full">
+
+<label>Tipo de usuario</label>
+
+<div class="user-types">
+
+<div class="user-option">
+<input
+    type="radio"
+    name="tipo"
+    id="estudiante"
+    value="estudiante"
+    required
+>
+<label for="estudiante">
+    👩‍🎓 Estudiante
+</label>
+</div>
+
+<div class="user-option">
+<input
+    type="radio"
+    name="tipo"
+    id="administrador"
+    value="administrador"
+>
+<label for="administrador">
+    👨‍💼 Administrador
+</label>
+</div>
+
+</div>
+
+</div>
+
+<div class="form-group full">
+<label>Contraseña</label>
+<input
+    id="password"
+    type="password"
+    placeholder="Crea una contraseña"
+    required
+>
+</div>
+
+</div>
+
+<button class="main-btn" type="submit">
+    Crear cuenta
+</button>
+
+<div class="switch-text">
+    ¿Ya tienes una cuenta?
+    <button
+        type="button"
+        class="link-btn"
+        onclick="mostrarLogin()"
+    >
+        Iniciar sesion
+    </button>
+</div>
+
+</form>
+
+<div class="quote">
+    “Organiza tu tiempo, alcanza tus metas.” 🌟
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= LOGIN ================= -->
+
+<section id="loginScreen" class="hidden">
+
+<div class="card register-card">
+
+<h1>Iniciar sesión 👋</h1>
+
+<p class="subtitle">
+    Ingresa a tu cuenta de Agenda Estudiantil.
+</p>
+
+<form id="loginForm">
+
+<div class="form-group">
+<label>Usuario</label>
+
+<input
+    id="loginUsuario"
+    type="text"
+    placeholder="Escribe tu usuario"
+    required
+>
+
+</div>
+
+<div class="form-group">
+<label>Contraseña</label>
+
+<input
+    id="loginPassword"
+    type="password"
+    placeholder="Escribe tu contraseña"
+    required
+>
+
+</div>
+
+<button class="main-btn" type="submit">
+    Iniciar sesión
+</button>
+
+</form>
+
+<div class="switch-text">
+    ¿No tienes una cuenta?
+
+    <button
+        type="button"
+        class="link-btn"
+        onclick="mostrarRegistro()"
+    >
+        Crear cuenta
+    </button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= ADMIN ================= -->
+
+<section id="adminScreen" class="hidden">
+
+<div class="topbar">
+
+<div class="brand">
+
+<img
+    class="small-logo"
+    src="Logo.jpeg"
+    alt="Logo Agenda Estudiantil"
+>
+
+<div>
+
+<strong>Agenda Estudiantil</strong>
+
+<div style="opacity:.7;font-size:13px">
+    U.E. José Clemente Maurer
+</div>
+
+</div>
+
+</div>
+
+<button
+    class="logout"
+    onclick="cerrarSesion()"
+>
+    Cerrar sesión
+</button>
+
+</div>
+
+
+<div class="welcome">
+
+<h1>
+    Hola, <span id="adminName"></span> 👋
+</h1>
+
+<p>
+    Panel de administrador
+</p>
+
+<span class="course-badge">
+    📚 <span id="adminCourse"></span>
+</span>
+
+</div>
+
+
+<div class="card">
+
+<div class="admin-header">
+
+<div>
+
+<h2>Mis actividades</h2>
+
+<p style="opacity:.7">
+    Registra las actividades de tu curso.
+</p>
+
+</div>
+
+<button
+    class="add-btn"
+    onclick="abrirModal()"
+>
+    ＋ Agregar
+</button>
+
+</div>
+
+<div
+    id="adminTasks"
+    class="task-list"
+></div>
+
+</div>
+
+<div class="quote">
+    “Cada tarea completada es un paso más hacia tu meta.” 💙
+</div>
+
+</section>
+
+
+<!-- ================= ESTUDIANTE ================= -->
+
+<section id="studentScreen" class="hidden">
+
+<div class="topbar">
+
+<div class="brand">
+
+<img
+    class="small-logo"
+    src="Logo.jpeg"
+    alt="Logo Agenda Estudiantil"
+>
+
+<div>
+
+<strong>Agenda Estudiantil</strong>
+
+<div style="opacity:.7;font-size:13px">
+    U.E. José Clemente Maurer
+</div>
+
+</div>
+
+</div>
+
+<button
+    class="logout"
+    onclick="cerrarSesion()"
+>
+    Cerrar sesión
+</button>
+
+</div>
+
+
+<div class="welcome">
+
+<h1>
+    Hola, <span id="studentName"></span> 👋
+</h1>
+
+<p>
+    Estas son las actividades de tu curso.
+</p>
+
+<span class="course-badge">
+    📚 <span id="studentCourse"></span>
+</span>
+
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+    <div id="totalTasks" class="stat-number">0</div>
+    <div class="stat-label">Actividades</div>
+</div>
+
+<div class="stat">
+    <div id="pendingTasks" class="stat-number">0</div>
+    <div class="stat-label">Pendientes</div>
+</div>
+
+<div class="stat">
+    <div id="doneTasks" class="stat-number">0</div>
+    <div class="stat-label">Completadas</div>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📚 Mi agenda</h2>
+
+<p style="opacity:.7">
+    Tareas, exámenes y actividades de tu curso.
+</p>
+
+<div
+    id="studentTasks"
+    class="task-list"
+></div>
+
+</div>
+
+
+<div class="quote">
+    “No tienes que hacerlo todo de una vez. Solo empieza.” 🌟
+</div>
+
+</section>
+
+</div>
+
+
+<!-- ================= MODAL ================= -->
+
+<div
+    id="taskModal"
+    class="modal hidden"
+>
+
+<div class="card modal-content">
+
+<h2>Agregar actividad 📝</h2>
+
+<p class="subtitle">
+    La actividad se registrará únicamente para tu curso.
+</p>
+
+<form id="taskForm">
+
+<div class="form-group">
+
+<label>
+    Nombre de la actividad
+</label>
+
+<input
+    id="taskTitle"
+    type="text"
+    placeholder="Ej. Tarea de Matemática"
+    required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+    Descripción
+</label>
+
+<textarea
+    id="taskDescription"
+    placeholder="Escribe los detalles de la actividad"
+></textarea>
+
+</div>
+
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>
+    Tipo
+</label>
+
+<select id="taskType" required>
+
+<option value="Tarea">
+    📝 Tarea
+</option>
+
+<option value="Examen">
+    📚 Examen
+</option>
+
+<option value="Actividad">
+    📌 Actividad
+</option>
+
+<option value="Otro">
+    📎 Otro
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+    Fecha de entrega
+</label>
+
+<input
+    id="taskDate"
+    type="date"
+    required
+>
+
+</div>
+
+</div>
+
+
+<div class="modal-buttons">
+
+<button
+    type="button"
+    class="cancel-btn"
+    onclick="cerrarModal()"
+>
+    Cancelar
+</button>
+
+<button
+    type="submit"
+    class="save-btn"
+>
+    Guardar
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
