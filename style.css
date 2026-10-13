@@ -205,16 +205,21 @@ button {
 }
 
 .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+display: flex;
+align-items: center;
+gap: 12px;
 }
 
-.small-logo {
-    width: 55px;
-    height: 55px;
-    border-radius: 16px;
-    object-fit: cover;
+.brand .logo {
+width: 55px;
+height: 55px;
+min-width: 55px;
+border-radius: 12px;
+object-fit: contain;
+display: block;
+margin: 0;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+flex-shrink: 0;
 }
 
 .logout {
