@@ -24,14 +24,14 @@ body {
     background: linear-gradient(135deg, #031b4e, #0755b8, #29a9ff);
     animation: desaparecer 1s ease 3s forwards;
 }
-
 .logo {
-    width: 125px;
-    height: 125px;
-    border-radius: 30px;
-    object-fit: cover;
-    box-shadow: 0 15px 40px rgba(0,0,0,.3);
-    margin-bottom: 20px;
+width: 125px;
+height: 125px;
+border-radius: 30px;
+object-fit: contain;
+display: block;
+margin: 0 auto 20px;
+box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
 .splash-title {
