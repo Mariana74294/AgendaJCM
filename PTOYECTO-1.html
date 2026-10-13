@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda Estudiantil | U.E. José Clemente Maurer</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #031b4e, #0755b8, #29a9ff);
+    color: white;
+}
+
+#splash {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #031b4e, #0755b8, #29a9ff);
+    animation: desaparecer 1s ease 3s forwards;
+}
+
+.logo {
+    width: 125px;
+    height: 125px;
+    border-radius: 30px;
+    object-fit: cover;
+    box-shadow: 0 15px 40px rgba(0,0,0,.3);
+    margin-bottom: 20px;
+}
+
+.splash-title {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.splash-subtitle {
+    margin-top: 5px;
+    opacity: .8;
+}
+
+@keyframes desaparecer {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+.app {
+    width: 100%;
+    max-width: 1050px;
+    margin: auto;
+    padding: 25px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.card {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.18);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.18);
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+h2 {
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    opacity: .8;
+    margin-bottom: 25px;
+}
+
+/* ================= REGISTRO ================= */
+
+#registerScreen {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-card {
+    width: 100%;
+    max-width: 600px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 13px;
+    padding: 13px 15px;
+    background: rgba(255,255,255,.93);
+    color: #123;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.main-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    background: white;
+    color: #0755b8;
+    font-weight: 700;
+    font-size: 16px;
+    transition: .2s;
+}
+
+.main-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,.2);
+}
+
+/* ================= TIPO USUARIO ================= */
+
+.user-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.user-option {
+    position: relative;
+}
+
+.user-option input {
+    display: none;
+}
+
+.user-option label {
+    margin: 0;
+    padding: 15px;
+    text-align: center;
+    border-radius: 14px;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.user-option input:checked + label {
+    background: white;
+    color: #0755b8;
+}
+
+/* ================= HEADER ================= */
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.small-logo {
+    width: 55px;
+    height: 55px;
+    border-radius: 16px;
+    object-fit: cover;
+}
+
+.logout {
+    background: rgba(255,255,255,.15);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 12px;
+}
+
+/* ================= PERFIL ================= */
+
+.welcome {
+    margin-bottom: 22px;
+}
+
+.welcome p {
+    opacity: .8;
+}
+
+.course-badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 7px 13px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.16);
+}
+
+/* ================= DASHBOARD ================= */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat {
+    padding: 20px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.1);
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.stat-label {
+    opacity: .75;
+    font-size: 14px;
+}
+
+/* ================= TAREAS ================= */
+
+.task-list {
+    display: grid;
+    gap: 15px;
+    margin-top: 18px;
+}
+
+.task {
+    position: relative;
+    padding: 20px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.1);
+    border-left: 5px solid #55c7ff;
+}
+
+.task.urgent {
+    border-left-color: #ff5b6e;
+}
+
+.task.medium {
+    border-left-color: #ffc857;
+}
+
+.task.easy {
+    border-left-color: #4ee19b;
+}
+
+.task.completed {
+    opacity: .55;
+}
+
+.task.completed .task-title {
+    text-decoration: line-through;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.task-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.task-type {
+    font-size: 12px;
+    padding: 5px 9px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.15);
+}
+
+.task-description {
+    margin: 9px 0;
+    opacity: .8;
+}
+
+.task-date {
+    font-size: 14px;
+    opacity: .8;
+}
+
+.priority {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.priority.urgent {
+    background: rgba(255,91,110,.2);
+    color: #ffb5be;
+}
+
+.priority.medium {
+    background: rgba(255,200,87,.2);
+    color: #ffe39a;
+}
+
+.priority.easy {
+    background: rgba(78,225,155,.2);
+    color: #a5f4d0;
+}
+
+.complete-btn {
+    margin-top: 12px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: white;
+    color: #0755b8;
+    font-weight: 600;
+}
+
+/* ================= ADMIN ================= */
+
+.add-btn {
+    padding: 12px 18px;
+    border-radius: 13px;
+    background: white;
+    color: #0755b8;
+    font-weight: 700;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+/* ================= MODAL ================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0,0,0,.55);
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 550px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.cancel-btn {
+    width: 50%;
+    padding: 13px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.15);
+    color: white;
+}
+
+.save-btn {
+    width: 50%;
+    padding: 13px;
+    border-radius: 12px;
+    background: white;
+    color: #0755b8;
+    font-weight: 700;
+}
+
+/* ================= FRASE ================= */
+
+.quote {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 18px;
+    text-align: center;
+    background: rgba(255,255,255,.08);
+    font-style: italic;
+    opacity: .9;
+}
+
+/* ================= LOGIN ================= */
+
+#loginScreen {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.switch-text {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 14px;
+}
+
+.link-btn {
+    background: none;
+    border: none;
+    color: white;
+    text-decoration: underline;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:650px) {
+
+    .app {
+        padding: 15px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: auto;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        align-items: flex-start;
+    }
+
+    .admin-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    h1 {
+        font-size: 27px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= SPLASH ================= -->
+
+<div id="splash">
+
+    <img
+    
+        class="logo"
+        src="Logo.jpeg"
+        alt="Logo Agenda Estudiantil"
+    >
+
+    <div class="splash-title">Agenda Estudiantil</div>
+    <div class="splash-subtitle">
+        U.E. José Clemente Maurer
+    </div>
+
+</div>
+
+
+<div class="app">
+
+<!-- ================= REGISTRO ================= -->
+
+<section id="registerScreen">
+
+<div class="card register-card">
+
+<h1>Crear cuenta ✨</h1>
+
+<p class="subtitle">
+    Organiza tus actividades y mantén todo en un solo lugar.
+</p>
+
+<form id="registerForm">
+
+<div class="form-grid">
+
+<div class="form-group full">
+<label>Nombre completo</label>
+<input
+    id="nombre"
+    type="text"
+    placeholder="Escribe tu nombre completo"
+    required
+>
+</div>
+
+<div class="form-group">
+<label>Usuario</label>
+<input
+    id="usuario"
+    type="text"
+    placeholder="Ej. maria123"
+    required
+>
+</div>
+
+<div class="form-group">
+<label>Correo electrónico</label>
+<input
+    id="correo"
+    type="email"
+    placeholder="correo@ejemplo.com"
+    required
+>
+</div>
+
+<div class="form-group">
+<label>Curso</label>
+<select id="curso" required>
+    <option value="">Seleccionar curso</option>
+    <option>1ro</option>
+    <option>2do</option>
+    <option>3ro</option>
+    <option>4to</option>
+    <option>5to</option>
+    <option>6to</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Paralelo</label>
+<select id="paralelo" required>
+    <option value="">Seleccionar paralelo</option>
+    <option>A</option>
+    <option>B</option>
+    <option>C</option>
+</select>
+</div>
+
+<div class="form-group full">
+
+<label>Tipo de usuario</label>
+
+<div class="user-types">
+
+<div class="user-option">
+<input
+    type="radio"
+    name="tipo"
+    id="estudiante"
+    value="estudiante"
+    required
+>
+<label for="estudiante">
+    👩‍🎓 Estudiante
+</label>
+</div>
+
+<div class="user-option">
+<input
+    type="radio"
+    name="tipo"
+    id="administrador"
+    value="administrador"
+>
+<label for="administrador">
+    👨‍💼 Administrador
+</label>
+</div>
+
+</div>
+
+</div>
+
+<div class="form-group full">
+<label>Contraseña</label>
+<input
+    id="password"
+    type="password"
+    placeholder="Crea una contraseña"
+    required
+>
+</div>
+
+</div>
+
+<button class="main-btn" type="submit">
+    Crear cuenta
+</button>
+
+<div class="switch-text">
+    ¿Ya tienes una cuenta?
+    <button
+        type="button"
+        class="link-btn"
+        onclick="mostrarLogin()"
+    >
+        Iniciar sesion
+    </button>
+</div>
+
+</form>
+
+<div class="quote">
+    “Organiza tu tiempo, alcanza tus metas.” 🌟
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= LOGIN ================= -->
+
+<section id="loginScreen" class="hidden">
+
+<div class="card register-card">
+
+<h1>Iniciar sesión 👋</h1>
+
+<p class="subtitle">
+    Ingresa a tu cuenta de Agenda Estudiantil.
+</p>
+
+<form id="loginForm">
+
+<div class="form-group">
+<label>Usuario</label>
+
+<input
+    id="loginUsuario"
+    type="text"
+    placeholder="Escribe tu usuario"
+    required
+>
+
+</div>
+
+<div class="form-group">
+<label>Contraseña</label>
+
+<input
+    id="loginPassword"
+    type="password"
+    placeholder="Escribe tu contraseña"
+    required
+>
+
+</div>
+
+<button class="main-btn" type="submit">
+    Iniciar sesión
+</button>
+
+</form>
+
+<div class="switch-text">
+    ¿No tienes una cuenta?
+
+    <button
+        type="button"
+        class="link-btn"
+        onclick="mostrarRegistro()"
+    >
+        Crear cuenta
+    </button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= ADMIN ================= -->
+
+<section id="adminScreen" class="hidden">
+
+<div class="topbar">
+
+<div class="brand">
+
+<img
+    class="small-logo"
+    src="Logo.jpeg"
+    alt="Logo Agenda Estudiantil"
+>
+
+<div>
+
+<strong>Agenda Estudiantil</strong>
+
+<div style="opacity:.7;font-size:13px">
+    U.E. José Clemente Maurer
+</div>
+
+</div>
+
+</div>
+
+<button
+    class="logout"
+    onclick="cerrarSesion()"
+>
+    Cerrar sesión
+</button>
+
+</div>
+
+
+<div class="welcome">
+
+<h1>
+    Hola, <span id="adminName"></span> 👋
+</h1>
+
+<p>
+    Panel de administrador
+</p>
+
+<span class="course-badge">
+    📚 <span id="adminCourse"></span>
+</span>
+
+</div>
+
+
+<div class="card">
+
+<div class="admin-header">
+
+<div>
+
+<h2>Mis actividades</h2>
+
+<p style="opacity:.7">
+    Registra las actividades de tu curso.
+</p>
+
+</div>
+
+<button
+    class="add-btn"
+    onclick="abrirModal()"
+>
+    ＋ Agregar
+</button>
+
+</div>
+
+<div
+    id="adminTasks"
+    class="task-list"
+></div>
+
+</div>
+
+<div class="quote">
+    “Cada tarea completada es un paso más hacia tu meta.” 💙
+</div>
+
+</section>
+
+
+<!-- ================= ESTUDIANTE ================= -->
+
+<section id="studentScreen" class="hidden">
+
+<div class="topbar">
+
+<div class="brand">
+
+<img
+    class="small-logo"
+    src="Logo.jpeg"
+    alt="Logo Agenda Estudiantil"
+>
+
+<div>
+
+<strong>Agenda Estudiantil</strong>
+
+<div style="opacity:.7;font-size:13px">
+    U.E. José Clemente Maurer
+</div>
+
+</div>
+
+</div>
+
+<button
+    class="logout"
+    onclick="cerrarSesion()"
+>
+    Cerrar sesión
+</button>
+
+</div>
+
+
+<div class="welcome">
+
+<h1>
+    Hola, <span id="studentName"></span> 👋
+</h1>
+
+<p>
+    Estas son las actividades de tu curso.
+</p>
+
+<span class="course-badge">
+    📚 <span id="studentCourse"></span>
+</span>
+
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+    <div id="totalTasks" class="stat-number">0</div>
+    <div class="stat-label">Actividades</div>
+</div>
+
+<div class="stat">
+    <div id="pendingTasks" class="stat-number">0</div>
+    <div class="stat-label">Pendientes</div>
+</div>
+
+<div class="stat">
+    <div id="doneTasks" class="stat-number">0</div>
+    <div class="stat-label">Completadas</div>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📚 Mi agenda</h2>
+
+<p style="opacity:.7">
+    Tareas, exámenes y actividades de tu curso.
+</p>
+
+<div
+    id="studentTasks"
+    class="task-list"
+></div>
+
+</div>
+
+
+<div class="quote">
+    “No tienes que hacerlo todo de una vez. Solo empieza.” 🌟
+</div>
+
+</section>
+
+</div>
+
+
+<!-- ================= MODAL ================= -->
+
+<div
+    id="taskModal"
+    class="modal hidden"
+>
+
+<div class="card modal-content">
+
+<h2>Agregar actividad 📝</h2>
+
+<p class="subtitle">
+    La actividad se registrará únicamente para tu curso.
+</p>
+
+<form id="taskForm">
+
+<div class="form-group">
+
+<label>
+    Nombre de la actividad
+</label>
+
+<input
+    id="taskTitle"
+    type="text"
+    placeholder="Ej. Tarea de Matemática"
+    required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+    Descripción
+</label>
+
+<textarea
+    id="taskDescription"
+    placeholder="Escribe los detalles de la actividad"
+></textarea>
+
+</div>
+
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>
+    Tipo
+</label>
+
+<select id="taskType" required>
+
+<option value="Tarea">
+    📝 Tarea
+</option>
+
+<option value="Examen">
+    📚 Examen
+</option>
+
+<option value="Actividad">
+    📌 Actividad
+</option>
+
+<option value="Otro">
+    📎 Otro
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+    Fecha de entrega
+</label>
+
+<input
+    id="taskDate"
+    type="date"
+    required
+>
+
+</div>
+
+</div>
+
+
+<div class="modal-buttons">
+
+<button
+    type="button"
+    class="cancel-btn"
+    onclick="cerrarModal()"
+>
+    Cancelar
+</button>
+
+<button
+    type="submit"
+    class="save-btn"
+>
+    Guardar
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =================================================
+   DATOS
+================================================= */
+
+let usuarioActual = null;
+
+let cuentas = JSON.parse(
+    localStorage.getItem("agendaCuentas") || "[]"
+);
+
+let tareas = JSON.parse(
+    localStorage.getItem("agendaTareas") || "[]"
+);
+
+
+/* =================================================
+   REGISTRO
+================================================= */
+
+document
+.getElementById("registerForm")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const nombre =
+        document
+        .getElementById("nombre")
+        .value
+        .trim();
+
+    const usuario =
+        document
+        .getElementById("usuario")
+        .value
+        .trim();
+
+    const correo =
+        document
+        .getElementById("correo")
+        .value
+        .trim();
+
+    const curso =
+        document
+        .getElementById("curso")
+        .value;
+
+    const paralelo =
+        document
+        .getElementById("paralelo")
+        .value;
+
+    const tipo =
+        document
+        .querySelector(
+            'input[name="tipo"]:checked'
+        )
+        .value;
+
+    const password =
+        document
+        .getElementById("password")
+        .value;
+
+
+    /* Verificar usuario */
+
+    if (
+        cuentas.some(
+            c => c.usuario === usuario
+        )
+    ) {
+
+        alert(
+            "Ese usuario ya existe. Elige otro."
+        );
+
+        return;
+    }
+
+
+    const nuevaCuenta = {
+
+        id: Date.now(),
+
+        nombre,
+        usuario,
+        correo,
+        curso,
+        paralelo,
+        tipo,
+        password
+
+    };
+
+
+    cuentas.push(nuevaCuenta);
+
+
+    localStorage.setItem(
+        "agendaCuentas",
+        JSON.stringify(cuentas)
+    );
+
+
+    usuarioActual = nuevaCuenta;
+
+
+    alert(
+        "¡Cuenta creada correctamente! 🎉"
+    );
+
+
+    mostrarPanel();
+
+});
+
+
+/* =================================================
+   MOSTRAR PANEL
+================================================= */
+
+function mostrarPanel() {
+
+    /*
+       CORRECCIÓN:
+       Se ocultan completamente tanto
+       REGISTRO como INICIO DE SESIÓN.
+    */
+
+    document
+    .getElementById("registerScreen")
+    .classList.add("hidden");
+
+    document
+    .getElementById("loginScreen")
+    .classList.add("hidden");
+
+
+    if (
+        usuarioActual.tipo === "administrador"
+    ) {
+
+        document
+        .getElementById("adminScreen")
+        .classList.remove("hidden");
+
+
+        document
+        .getElementById("adminName")
+        .textContent =
+            usuarioActual.nombre;
+
+
+        document
+        .getElementById("adminCourse")
+        .textContent =
+            usuarioActual.curso +
+            " " +
+            usuarioActual.paralelo;
+
+
+        cargarTareasAdmin();
+
+    }
+
+    else {
+
+        document
+        .getElementById("studentScreen")
+        .classList.remove("hidden");
+
+
+        document
+        .getElementById("studentName")
+        .textContent =
+            usuarioActual.nombre;
+
+
+        document
+        .getElementById("studentCourse")
+        .textContent =
+            usuarioActual.curso +
+            " " +
+            usuarioActual.paralelo;
+
+
+        cargarTareasEstudiante();
+
+    }
+
+}
+
+
+/* =================================================
+   ADMIN — ABRIR MODAL
+================================================= */
+
+function abrirModal() {
+
+    document
+    .getElementById("taskModal")
+    .classList
+    .remove("hidden");
+
+}
+
+
+function cerrarModal() {
+
+    document
+    .getElementById("taskModal")
+    .classList
+    .add("hidden");
+
+}
+
+
+/* =================================================
+   ADMIN — CREAR TAREA
+================================================= */
+
+document
+.getElementById("taskForm")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+
+    const tarea = {
+
+        id: Date.now(),
+
+        titulo:
+            document
+            .getElementById("taskTitle")
+            .value,
+
+        descripcion:
+            document
+            .getElementById("taskDescription")
+            .value,
+
+        tipo:
+            document
+            .getElementById("taskType")
+            .value,
+
+        fecha:
+            document
+            .getElementById("taskDate")
+            .value,
+
+        curso:
+            usuarioActual.curso,
+
+        paralelo:
+            usuarioActual.paralelo,
+
+        completada: false
+
+    };
+
+
+    tareas.push(tarea);
+
+
+    localStorage.setItem(
+        "agendaTareas",
+        JSON.stringify(tareas)
+    );
+
+
+    document
+    .getElementById("taskForm")
+    .reset();
+
+
+    cerrarModal();
+
+
+    cargarTareasAdmin();
+
+   
+
+
+    alert(
+        "Actividad registrada correctamente. ✅"
+    );
+
+});
+
+
+/* =================================================
+   PRIORIDAD
+================================================= */
+
+function obtenerPrioridad(
+    fecha,
+    completada
+) {
+
+    if (completada) {
+
+        return {
+
+            clase: "easy",
+
+            texto: "✓ Completada"
+
+        };
+
+    }
+
+
+    const hoy = new Date();
+
+    hoy.setHours(0,0,0,0);
+
+
+    const fechaEntrega =
+        new Date(
+            fecha + "T00:00:00"
+        );
+
+
+    const diferencia =
+        Math.ceil(
+            (fechaEntrega - hoy) /
+            (1000 * 60 * 60 * 24)
+        );
+
+
+    if (diferencia <= 1) {
+
+        return {
+
+            clase: "urgent",
+
+            texto: "🔴 Urgente"
+
+        };
+
+    }
+
+
+    if (diferencia <= 6) {
+
+        return {
+
+            clase: "medium",
+
+            texto: "🟠 Próxima"
+
+        };
+
+    }
+
+
+    return {
+
+        clase: "easy",
+
+        texto: "🟢 Con tiempo"
+
+    };
+
+}
+
+
+/* =================================================
+   MOSTRAR TAREA
+================================================= */
+
+function crearHTMLTarea(
+    tarea,
+    estudiante = false
+) {
+
+    const prioridad =
+        obtenerPrioridad(
+            tarea.fecha,
+            tarea.completada
+        );
+
+
+    const fechaBonita =
+        new Date(
+            tarea.fecha +
+            "T00:00:00"
+        )
+        .toLocaleDateString(
+            "es-BO",
+            {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+
+    return `
+
+    <div class="task
+        ${prioridad.clase}
+        ${tarea.completada
+            ? 'completed'
+            : ''
+        }">
+
+        <div class="task-header">
+
+            <div class="task-title">
+                ${escapeHTML(
+                    tarea.titulo
+                )}
+            </div>
+
+            <div class="task-type">
+                ${escapeHTML(
+                    tarea.tipo
+                )}
+            </div>
+
+        </div>
+
+
+        ${
+            tarea.descripcion
+            ?
+            `<div class="task-description">
+                ${escapeHTML(
+                    tarea.descripcion
+                )}
+            </div>`
+            :
+            ""
+        }
+
+
+        <div class="task-date">
+            📅 ${fechaBonita}
+        </div>
+
+
+        <div class="priority
+            ${prioridad.clase}">
+            ${prioridad.texto}
+        </div>
+
+
+        ${
+            estudiante &&
+            !tarea.completada
+            ?
+            `<br>
+
+            <button
+                class="complete-btn"
+                onclick="completarTarea(
+                    ${tarea.id}
+                )"
+            >
+                ✓ Marcar como completada
+            </button>`
+
+            :
+            ""
+        }
+
+    </div>
+
+    `;
+
+}
+
+
+/* =================================================
+   ADMIN — MOSTRAR SUS TAREAS
+================================================= */
+
+function cargarTareasAdmin() {
+
+    const contenedor =
+        document
+        .getElementById("adminTasks");
+
+
+    const misTareas =
+        tareas.filter(
+            t =>
+                t.curso ===
+                    usuarioActual.curso
+                &&
+                t.paralelo ===
+                    usuarioActual.paralelo
+        );
+
+
+    if (
+        misTareas.length === 0
+    ) {
+
+        contenedor.innerHTML = `
+
+            <div
+                style="
+                    text-align:center;
+                    padding:30px;
+                    opacity:.7
+                "
+            >
+                📚 Todavía no hay actividades.
+                <br>
+                Agrega la primera.
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    contenedor.innerHTML =
+
+        misTareas
+
+        .sort(
+            (a,b) =>
+                new Date(a.fecha) -
+                new Date(b.fecha)
+        )
+
+        .map(
+            t =>
+                crearHTMLTarea(t)
+        )
+
+        .join("");
+
+}
+
+
+/* =================================================
+   ESTUDIANTE — MOSTRAR TAREAS
+================================================= */
+
+function cargarTareasEstudiante() {
+
+    const contenedor =
+        document
+        .getElementById("studentTasks");
+
+
+    const misTareas =
+        tareas.filter(
+            t =>
+                t.curso ===
+                    usuarioActual.curso
+                &&
+                t.paralelo ===
+                    usuarioActual.paralelo
+        );
+
+
+    document
+    .getElementById("totalTasks")
+    .textContent =
+        misTareas.length;
+
+
+    document
+    .getElementById("pendingTasks")
+    .textContent =
+        misTareas.filter(
+            t => !t.completada
+        ).length;
+
+
+    document
+    .getElementById("doneTasks")
+    .textContent =
+        misTareas.filter(
+            t => t.completada
+        ).length;
+
+
+    if (
+        misTareas.length === 0
+    ) {
+
+        contenedor.innerHTML = `
+
+            <div
+                style="
+                    text-align:center;
+                    padding:30px;
+                    opacity:.7
+                "
+            >
+                🌟 No tienes actividades
+                por ahora.
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    contenedor.innerHTML =
+
+        misTareas
+
+        .sort(
+            (a,b) =>
+                new Date(a.fecha) -
+                new Date(b.fecha)
+        )
+
+        .map(
+            t =>
+                crearHTMLTarea(
+                    t,
+                    true
+                )
+        )
+
+        .join("");
+
+}
+
+
+/* =================================================
+   COMPLETAR TAREA
+================================================= */
+
+function completarTarea(id) {
+
+    const tarea =
+        tareas.find(
+            t => t.id === id
+        );
+
+
+    if (!tarea) return;
+
+
+    tarea.completada = true;
+
+
+    localStorage.setItem(
+        "agendaTareas",
+        JSON.stringify(tareas)
+    );
+
+
+    cargarTareasEstudiante();
+
+}
+
+
+/* =================================================
+   INICIAR SESIÓN
+================================================= */
+
+function mostrarLogin() {
+
+    document
+    .getElementById("registerScreen")
+    .classList
+    .add("hidden");
+
+
+    document
+    .getElementById("loginScreen")
+    .classList
+    .remove("hidden");
+
+}
+
+
+function mostrarRegistro() {
+
+    document
+    .getElementById("loginScreen")
+    .classList
+    .add("hidden");
+
+
+    document
+    .getElementById("registerScreen")
+    .classList
+    .remove("hidden");
+
+}
+
+
+document
+.getElementById("loginForm")
+.addEventListener(
+    "submit",
+    function(e) {
+
+        e.preventDefault();
+
+
+        const usuario =
+            document
+            .getElementById(
+                "loginUsuario"
+            )
+            .value
+            .trim();
+
+
+        const password =
+            document
+            .getElementById(
+                "loginPassword"
+            )
+            .value;
+
+
+        const cuenta =
+            cuentas.find(
+                c =>
+                    c.usuario
+                    .toLowerCase()
+                    ===
+                    usuario.toLowerCase()
+                    &&
+                    c.password
+                    ===
+                    password
+            );
+
+
+        if (!cuenta) {
+
+            alert(
+                "Usuario o contraseña incorrectos. ❌"
+            );
+
+            return;
+        }
+
+
+        usuarioActual = cuenta;
+
+
+        /*
+           AQUÍ SE LLAMA A mostrarPanel()
+           Y mostrarPanel() ahora oculta
+           TAMBIÉN loginScreen.
+        */
+
+        mostrarPanel();
+
+    }
+);
+
+
+/* =================================================
+   CERRAR SESIÓN
+================================================= */
+
+function cerrarSesion() {
+
+    usuarioActual = null;
+
+
+    document
+    .getElementById("adminScreen")
+    .classList
+    .add("hidden");
+
+
+    document
+    .getElementById("studentScreen")
+    .classList
+    .add("hidden");
+
+
+    /*
+       También ocultamos login por si
+       estaba visible.
+    */
+
+    document
+    .getElementById("loginScreen")
+    .classList
+    .add("hidden");
+
+
+    document
+    .getElementById("registerScreen")
+    .classList
+    .remove("hidden");
+
+}
+
+
+/* =================================================
+   SEGURIDAD BÁSICA PARA TEXTO
+================================================= */
+
+function escapeHTML(text) {
+
+    return String(text)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+</script>
+
+</body>
+</html>
