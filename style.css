@@ -542,17 +542,16 @@ flex-shrink: 0;
 }
 
 
-
 /* Escudo solo en los paneles principales */
 
-#adminPanel,
-#studentPanel {
+#adminScreen,
+#studentScreen {
     position: relative;
     isolation: isolate;
 }
 
-#adminPanel::before,
-#studentPanel::before {
+#adminScreen::before,
+#studentScreen::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -567,9 +566,8 @@ flex-shrink: 0;
     z-index: 0;
 }
 
-#adminPanel > *,
-#studentPanel > * {
+#adminScreen > *,
+#studentScreen > * {
     position: relative;
     z-index: 1;
 }
-
