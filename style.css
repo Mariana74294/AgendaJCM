@@ -541,7 +541,8 @@ flex-shrink: 0;
     font-weight: bold;
 }
 
-/* ===== MARCA DE AGUA DEL COLEGIO ===== */
+
+/* ===== ESCUDO DE FONDO ===== */
 
 #adminScreen,
 #studentScreen {
@@ -549,6 +550,7 @@ flex-shrink: 0;
     isolation: isolate;
 }
 
+/* Imagen del escudo */
 #adminScreen::before,
 #studentScreen::before {
     content: "";
@@ -557,14 +559,15 @@ flex-shrink: 0;
     background-image: url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/images.jpeg");
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: 350px auto;
-    opacity: 0.15;
+    background-size: 300px auto;
+    opacity: 0.22;
     pointer-events: none;
-    z-index: 0;
+    z-index: -1;
 }
 
+/* El contenido permanece encima del escudo */
 #adminScreen > *,
 #studentScreen > * {
     position: relative;
-    z-index: 1;
 }
+
