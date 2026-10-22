@@ -558,7 +558,7 @@ flex-shrink: 0;
     transform: translate(-50%, -50%);
     width: min(75%, 600px);
     height: 75%;
-    background-image: url("imagenes/escudo.jpg");
+    background-image: url("imagenes.jpeg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
