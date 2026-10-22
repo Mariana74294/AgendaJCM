@@ -554,7 +554,7 @@ flex-shrink: 0;
     content: "";
     position: absolute;
     inset: 0;
-    background-image: url("imágenes.jpeg");
+    background-image: url("images.jpeg");
     background-repeat: no-repeat;
     background-position: center 180px;
     background-size: min(75%, 500px) auto;
