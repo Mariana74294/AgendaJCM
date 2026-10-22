@@ -1,4 +1,18 @@
 /* =================================================
+   DATOS
+================================================= */
+
+let usuarioActual = null;
+
+let cuentas = JSON.parse(
+    localStorage.getItem("agendaCuentas") || "[]"
+);
+
+let tareas = JSON.parse(
+    localStorage.getItem("agendaTareas") || "[]"
+);
+
+/* =================================================
    MATERIAS POR CURSO
 ================================================= */
 
@@ -93,20 +107,6 @@ const materiasPorCurso = {
         "Religión"
     ]
 };
-
-/* =================================================
-   DATOS
-================================================= */
-
-let usuarioActual = null;
-
-let cuentas = JSON.parse(
-    localStorage.getItem("agendaCuentas") || "[]"
-);
-
-let tareas = JSON.parse(
-    localStorage.getItem("agendaTareas") || "[]"
-);
 
 
 /* =================================================
