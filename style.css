@@ -541,8 +541,7 @@ flex-shrink: 0;
     font-weight: bold;
 }
 
-
-/* MARCA DE AGUA DEL COLEGIO */
+/* ===== ESCUDO DEL COLEGIO COMO MARCA DE AGUA ===== */
 
 #adminScreen,
 #studentScreen {
@@ -555,17 +554,12 @@ flex-shrink: 0;
     content: "";
     position: absolute;
     inset: 0;
-    background-image: url("https://mariana74294.github.io/AgendaJCM/im%C3%A1genes.jpeg");
+    background-image: url("imágenes.jpeg");
     background-repeat: no-repeat;
-    background-position: center;
-    background-size: 280px auto;
-    opacity: 0.18;
+    background-position: center 180px;
+    background-size: min(75%, 500px) auto;
+    opacity: 0.13;
     pointer-events: none;
-    z-index: 0;
+    z-index: -1;
 }
 
-#adminScreen > *,
-#studentScreen > * {
-    position: relative;
-    z-index: 1;
-}
