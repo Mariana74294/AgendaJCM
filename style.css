@@ -6,12 +6,23 @@
     padding: 0;
 }
 
+
 body {
     font-family: 'Outfit', sans-serif;
     min-height: 100vh;
-    background: linear-gradient(135deg, #031b4e, #0755b8, #29a9ff);
+    background: linear-gradient(
+        135deg,
+        #0639a8 0%,
+        #087df0 40%,
+        #4167f5 72%,
+        #9474f5 100%
+    );
+    background-attachment: fixed;
     color: white;
+    position: relative;
+    isolation: isolate;
 }
+
 
 #splash {
     position: fixed;
