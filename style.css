@@ -541,6 +541,8 @@ flex-shrink: 0;
     font-weight: bold;
 }
 
+
+
 /* Escudo solo en los paneles principales */
 
 #adminPanel,
@@ -553,25 +555,21 @@ flex-shrink: 0;
 #studentPanel::before {
     content: "";
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: min(75%, 600px);
-    height: 75%;
+    inset: 0;
+
     background-image: url("./im%C3%A1genes.jpeg");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: contain;
+    background-size: min(75%, 500px);
+
     opacity: 0.25;
     pointer-events: none;
-    z-index: -1;
+    z-index: 0;
 }
 
-
-.task-subject {
-    margin-top: 8px;
-    margin-bottom: 10px;
-    color: #4267a5;
-    font-size: 13px;
-    font-weight: 600;
+#adminPanel > *,
+#studentPanel > * {
+    position: relative;
+    z-index: 1;
 }
+
