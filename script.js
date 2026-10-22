@@ -518,6 +518,7 @@ function crearHTMLTarea(
             : ''
         }">
 
+
         <div class="task-header">
 
             <div class="task-title">
@@ -533,7 +534,6 @@ function crearHTMLTarea(
             </div>
 
         </div>
-
 
         ${
             tarea.descripcion
@@ -591,20 +591,16 @@ function crearHTMLTarea(
 
 function cargarTareasAdmin() {
 
-    const contenedor =
-        document
-        .getElementById("adminTasks");
+    const contenedor = document.getElementById("adminTasks");
 
+    const misTareas = tareas.filter(t =>
+        t.curso === usuarioActual.curso &&
+        t.paralelo === usuarioActual.paralelo
+    );
 
-    const misTareas =
-        tareas.filter(
-            t =>
-                t.curso ===
-                    usuarioActual.curso
-                &&
-                t.paralelo ===
-                    usuarioActual.paralelo
-        );
+    mostrarTareasPorMateria(contenedor, misTareas, false);
+}
+
 
 
     if (
@@ -657,20 +653,24 @@ function cargarTareasAdmin() {
 
 function cargarTareasEstudiante() {
 
-    const contenedor =
-        document
-        .getElementById("studentTasks");
+    const contenedor = document.getElementById("studentTasks");
 
+    const misTareas = tareas.filter(t =>
+        t.curso === usuarioActual.curso &&
+        t.paralelo === usuarioActual.paralelo
+    );
 
-    const misTareas =
-        tareas.filter(
-            t =>
-                t.curso ===
-                    usuarioActual.curso
-                &&
-                t.paralelo ===
-                    usuarioActual.paralelo
-        );
+    document.getElementById("totalTasks").textContent =
+        misTareas.length;
+
+    document.getElementById("pendingTasks").textContent =
+        misTareas.filter(t => !t.completada).length;
+
+    document.getElementById("doneTasks").textContent =
+        misTareas.filter(t => t.completada).length;
+
+    mostrarTareasPorMateria(contenedor, misTareas, true);
+}
 
 
     document
@@ -739,6 +739,63 @@ function cargarTareasEstudiante() {
         .join("");
 
 }
+function mostrarTareasPorMateria(contenedor, lista, estudiante) {
+
+    if (lista.length === 0) {
+        contenedor.innerHTML = `
+            <div style="text-align:center; padding:30px; opacity:.7">
+                📚 Todavía no hay actividades.
+            </div>
+        `;
+        return;
+    }
+
+    const grupos = {};
+
+    lista.forEach(tarea => {
+        const materia = tarea.materia || "Sin materia";
+
+        if (!grupos[materia]) {
+            grupos[materia] = [];
+        }
+
+        grupos[materia].push(tarea);
+    });
+
+    contenedor.innerHTML = Object.keys(grupos)
+        .sort((a, b) => a.localeCompare(b, "es"))
+        .map(materia => {
+
+            const actividades = grupos[materia]
+                .sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+
+            const pendientes = actividades.filter(t => !t.completada).length;
+
+            return `
+                <section class="materia-group">
+
+                    <h3 class="materia-heading">
+                        📚 ${escapeHTML(materia)}
+
+                        ${
+                            pendientes > 0
+                                ? `<span class="materia-badge">${pendientes}</span>`
+                                : ""
+                        }
+                    </h3>
+
+                    <div class="task-list">
+                        ${actividades.map(tarea =>
+                            crearHTMLTarea(tarea, estudiante)
+                        ).join("")}
+                    </div>
+
+                </section>
+            `;
+        })
+        .join("");
+}
+
 
 
 /* =================================================
