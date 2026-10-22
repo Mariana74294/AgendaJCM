@@ -347,6 +347,9 @@ document
             document
             .getElementById("taskDescription")
             .value,
+       
+           materia:
+              document.getElementById("taskSubject").value,
 
         tipo:
             document
