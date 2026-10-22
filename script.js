@@ -1,4 +1,100 @@
 /* =================================================
+   MATERIAS POR CURSO
+================================================= */
+
+const materiasPorCurso = {
+    "1ro": [
+        "Lenguaje",
+        "Lengua Extranjera",
+        "Ciencias Sociales",
+        "Educación Física y Deportes",
+        "Educación Musical",
+        "Artes Plásticas",
+        "Matemáticas",
+        "Técnica Tecnología",
+        "Biología",
+        "Religión"
+    ],
+
+    "2do": [
+        "Lenguaje",
+        "Lengua Extranjera",
+        "Ciencias Sociales",
+        "Educación Física y Deportes",
+        "Educación Musical",
+        "Artes Plásticas",
+        "Matemáticas",
+        "Técnica Tecnología",
+        "Biología",
+        "Religión"
+    ],
+
+    "3ro": [
+        "Comunicación y Lenguajes",
+        "Lengua Extranjera",
+        "Ciencias Sociales",
+        "Educación Física y Deportes",
+        "Educación Musical",
+        "Artes Plásticas",
+        "Matemáticas",
+        "Técnica Tecnología",
+        "Física",
+        "Química",
+        "Biología",
+        "Filosofías y Psicologías",
+        "Religión"
+    ],
+
+    "4to": [
+        "Comunicación y Lenguajes",
+        "Lengua Extranjera",
+        "Ciencias Sociales",
+        "Educación Física y Deportes",
+        "Educación Musical",
+        "Artes Plásticas",
+        "Matemáticas",
+        "Técnica Tecnología",
+        "Física",
+        "Química",
+        "Biología",
+        "Filosofías y Psicologías",
+        "Religión"
+    ],
+
+    "5to": [
+        "Comunicación y Lenguajes",
+        "Lengua Extranjera",
+        "Ciencias Sociales",
+        "Educación Física y Deportes",
+        "Educación Musical",
+        "Artes Plásticas",
+        "Matemáticas",
+        "Técnica Tecnología",
+        "Física",
+        "Química",
+        "Biología",
+        "Filosofías y Psicologías",
+        "Religión"
+    ],
+
+    "6to": [
+        "Comunicación y Lenguajes",
+        "Lengua Extranjera",
+        "Ciencias Sociales",
+        "Educación Física y Deportes",
+        "Educación Musical",
+        "Artes Plásticas",
+        "Matemáticas",
+        "Técnica Tecnología",
+        "Física",
+        "Química",
+        "Biología",
+        "Filosofías y Psicologías",
+        "Religión"
+    ]
+};
+
+/* =================================================
    DATOS
 ================================================= */
 
