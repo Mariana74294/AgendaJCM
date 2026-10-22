@@ -542,7 +542,8 @@ flex-shrink: 0;
 }
 
 
-/* Marca de agua en los paneles */
+/* MARCA DE AGUA DEL COLEGIO */
+
 #adminScreen,
 #studentScreen {
     position: relative;
@@ -554,11 +555,17 @@ flex-shrink: 0;
     content: "";
     position: absolute;
     inset: 0;
-    background-image: url("./im%C3%A1genes.jpeg");
+    background-image: url("https://mariana74294.github.io/AgendaJCM/im%C3%A1genes.jpeg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 280px auto;
-    opacity: 0.10;
+    opacity: 0.18;
     pointer-events: none;
-    z-index: -1;
+    z-index: 0;
+}
+
+#adminScreen > *,
+#studentScreen > * {
+    position: relative;
+    z-index: 1;
 }
