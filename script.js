@@ -294,12 +294,22 @@ function mostrarPanel() {
 ================================================= */
 
 function abrirModal() {
+    const selector = document.getElementById("taskSubject");
+    const curso = usuarioActual.curso;
 
-    document
-    .getElementById("taskModal")
-    .classList
-    .remove("hidden");
+    selector.innerHTML =
+        '<option value="">Seleccionar materia</option>';
 
+    const materias = materiasPorCurso[curso] || [];
+
+    materias.forEach(function(materia) {
+        const opcion = document.createElement("option");
+        opcion.value = materia;
+        opcion.textContent = materia;
+        selector.appendChild(opcion);
+    });
+
+    document.getElementById("taskModal").classList.remove("hidden");
 }
 
 
