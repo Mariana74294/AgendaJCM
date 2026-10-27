@@ -542,50 +542,40 @@ flex-shrink: 0;
 }
 
 
+/* ===== ESCUDO DEL PANEL ADMINISTRADOR ===== */
 
-/* ===== ESCUDO DE FONDO DE LOS PANELES ===== */
-
-#adminScreen,
-#studentScreen {
+#adminScreen {
     position: relative;
     isolation: isolate;
 }
 
-/* El escudo ocupa el panel completo, sin desplazamiento */
-#adminScreen::before,
-#studentScreen::before {
+#adminScreen::before {
     content: "";
     position: absolute;
-    inset: 0;
+    top: 250px;
+    left: 0;
+    right: 0;
+    bottom: 80px;
 
     background-image: url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png");
     background-repeat: no-repeat;
-    background-position: center 52%;
-    background-size: min(75vw, 380px) auto;
+    background-position: center center;
+    background-size: 280px auto;
 
     opacity: 0.35;
     pointer-events: none;
-    z-index: -1;
+    z-index: 0;
 }
 
-/* Las tarjetas dejan ver el escudo */
-#adminScreen > .card,
-#studentScreen > .card {
-    background-color: rgba(255, 255, 255, 0.12) !important;
-}
-
-/* Evita que el contenido tape los botones */
-#adminScreen button,
-#studentScreen button {
+/* Mantener el contenido por delante del escudo */
+#adminScreen > * {
     position: relative;
-    z-index: 2;
+    z-index: 1;
 }
 
-/* Ajustes para teléfonos */
-@media (max-width: 480px) {
-    #adminScreen::before,
-    #studentScreen::before {
-        background-size: 280px auto;
-        background-position: center 52%;
-    }
+/* Evitar que la tarjeta difumine el escudo */
+#adminScreen > .card {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
