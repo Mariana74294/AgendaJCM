@@ -541,31 +541,14 @@ flex-shrink: 0;
     font-weight: bold;
 }
 
-
-
-
-/* Imagen del escudo en el administrador */
-#adminScreen::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png");
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 300px auto;
-    opacity: 1;
-    pointer-events: none;
-    z-index: 0;
+/* Configuración base compartida para los escudos en ambos paneles */
+#adminScreen, #studentScreen {
+    position: relative; /* Obligatorio para que el absolute del ::before se confine aquí */
+    overflow: hidden;   /* Evita que el escudo sobresalga de la pantalla */
 }
 
-/* Contenido del administrador por encima del escudo */
-#adminScreen > * {
-    position: relative;
-    z-index: 1;
-}
-
-
-/* Imagen del escudo en el estudiante */
+/* Imagen del escudo unificada para administrador y estudiante */
+#adminScreen::before,
 #studentScreen::before {
     content: "";
     position: absolute;
@@ -574,14 +557,14 @@ flex-shrink: 0;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 300px auto;
-    opacity: 0.22;
-    pointer-events: none;
-    z-index: -1;
+    opacity: 0.25;          /* Transparencia ideal para que se vea claro y nítido (ni muy oscuro ni invisible) */
+    pointer-events: none;   /* Permite hacer clic en los botones y textos de encima */
+    z-index: 0;             /* Se coloca en la capa base del contenedor */
 }
 
-/* El contenido permanece encima del escudo */
+/* Asegurar que todo el contenido interno de ambas pantallas esté por encima del escudo */
 #adminScreen > *,
 #studentScreen > * {
     position: relative;
+    z-index: 1;
 }
-
