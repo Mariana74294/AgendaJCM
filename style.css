@@ -552,7 +552,7 @@ flex-shrink: 0;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 300px auto;
-    opacity: 0.85;
+    opacity: 0.22;
     pointer-events: none;
     z-index: -1;
 }
