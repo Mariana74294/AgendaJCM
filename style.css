@@ -590,7 +590,7 @@ flex-shrink: 0;
 #studentScreen::before {
     content: "";
     position: absolute;
-    top: 180px;
+    top: 100px;
     left: 0;
     right: 0;
     bottom: 80px;
