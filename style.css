@@ -541,34 +541,51 @@ flex-shrink: 0;
     font-weight: bold;
 }
 
-/* ===== ESCUDO NÍTIDO EN LOS PANELES ===== */
-
-/* Evitamos que los pseudo-elementos anteriores interfieran */
-#adminScreen::before,
-#studentScreen::before {
-    display: none !important;
+/* Configuración limpia para el escudo en el Administrador */
+#adminScreen {
+    position: relative !important;
+}
+#adminScreen::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background-image: url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png") !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: 300px auto !important;
+    opacity: 0.35 !important; /* <--- AQUÍ CONTROLAS LA OPACIDAD: Sube o baja este número (ej. 0.3 o 0.4) según qué tan claro lo quieras */
+    pointer-events: none !important;
+    z-index: 0 !important;
 }
 
-/* Fondo azul con escudo nítido */
-#adminScreen,
+/* Configuración limpia para el escudo en el Estudiante */
 #studentScreen {
     position: relative !important;
-    background-color: #0033bb !important;
-    background-image:
-        url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png"),
-        linear-gradient(to bottom, #0055ff, #0022aa) !important;
-    background-repeat: no-repeat, no-repeat !important;
-    background-position: center center, center center !important;
-    background-size: 320px auto, 100% 100% !important;
-    background-blend-mode: normal !important;
+}
+#studentScreen::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background-image: url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png") !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: 300px auto !important;
+    opacity: 0.35 !important; /* <--- Mismo nivel de opacidad para ambos */
+    pointer-events: none !important;
+    z-index: 0 !important;
 }
 
-/* Tarjetas transparentes para dejar ver el escudo */
-#adminScreen .card,
+/* El contenido y las tarjetas se colocan encima con un fondo suave para que las letras no se pierdan */
+#adminScreen > *,
+#studentScreen > * {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* Hacemos que las tarjetas principales tengan un fondo ligeramente translúcido para proteger la lectura */
+#adminScreen .card, 
 #studentScreen .card,
-#adminScreen > div,
-#studentScreen > div {
-    background-color: rgba(255, 255, 255, 0.15) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+#adminScreen > div > div {
+    background-color: rgba(255, 255, 255, 0.12) !important; /* Fondo cristal para resaltar las letras */
+    backdrop-filter: blur(4px);
 }
