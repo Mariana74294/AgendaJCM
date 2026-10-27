@@ -541,7 +541,7 @@ flex-shrink: 0;
     font-weight: bold;
 }
 
-/* Configuración limpia para el escudo en el Administrador */
+/* Escudo idéntico para el Administrador */
 #adminScreen {
     position: relative !important;
 }
@@ -553,12 +553,12 @@ flex-shrink: 0;
     background-repeat: no-repeat !important;
     background-position: center center !important;
     background-size: 300px auto !important;
-    opacity: 0.20 !important; /* <--- AQUÍ CONTROLAS LA OPACIDAD: Sube o baja este número (ej. 0.3 o 0.4) según qué tan claro lo quieras */
+    opacity: 0.30 !important; /* Mismo valor exacto */
     pointer-events: none !important;
     z-index: 0 !important;
 }
 
-/* Configuración limpia para el escudo en el Estudiante */
+/* Escudo idéntico para el Estudiante */
 #studentScreen {
     position: relative !important;
 }
@@ -570,22 +570,23 @@ flex-shrink: 0;
     background-repeat: no-repeat !important;
     background-position: center center !important;
     background-size: 300px auto !important;
-    opacity: 0.20 !important; /* <--- Mismo nivel de opacidad para ambos */
+    opacity: 0.30 !important; /* Mismo valor exacto */
     pointer-events: none !important;
     z-index: 0 !important;
 }
 
-/* El contenido y las tarjetas se colocan encima con un fondo suave para que las letras no se pierdan */
+/* Contenido por encima de los escudos en ambos paneles */
 #adminScreen > *,
 #studentScreen > * {
     position: relative !important;
     z-index: 2 !important;
 }
 
-/* Hacemos que las tarjetas principales tengan un fondo ligeramente translúcido para proteger la lectura */
+/* Unificamos el fondo translúcido de las tarjetas en ambos paneles para que dejen lucir el escudo igual */
 #adminScreen .card, 
 #studentScreen .card,
-#adminScreen > div > div {
-    background-color: rgba(255, 255, 255, 0.12) !important; /* Fondo cristal para resaltar las letras */
+#adminScreen > div > div,
+#studentScreen > div > div {
+    background-color: rgba(255, 255, 255, 0.12) !important;
     backdrop-filter: blur(4px);
 }
