@@ -541,52 +541,56 @@ flex-shrink: 0;
     font-weight: bold;
 }
 
-/* 1. Quitamos el escudo del fondo general para evitar que se oculte detrás de las tarjetas */
-#adminScreen::before,
-#studentScreen::before {
-    display: none !important;
-}
 
-/* 2. Hacemos que el escudo aparezca nítido y limpio justo en el contenedor principal de ambos paneles */
+/* ESCUDO DE FONDO: ADMINISTRADOR Y ESTUDIANTE */
+
 #adminScreen,
 #studentScreen {
     position: relative !important;
+    isolation: isolate;
 }
 
-/* 3. Colocamos el escudo con la misma visibilidad exacta en los dos paneles usando la clase o contenedor principal */
-#adminScreen #misActividadesContainer::before, /* O la tarjeta principal de tu admin */
+/* Un solo escudo por panel */
+#adminScreen::before,
 #studentScreen::before {
-    content: "" !important;
-    position: absolute !important;
-    inset: 0 !important;
-    background-image: url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png") !important;
-    background-repeat: no-repeat !important;
-    background-position: center center !important;
-    background-size: 280px auto !important;
-    opacity: 0.35 !important; /* Nitidez exacta que querías */
-    pointer-events: none !important;
-    z-index: 10 !important;
-}
-
-/* 4. Aseguramos que el escudo del administrador se renderice igualito al de estudiante */
-#adminScreen::after {
-    content: "" !important;
-    position: absolute !important;
-    top: 200px; /* Ajusta la altura si es necesario para centrarlo en el admin */
+    content: "";
+    position: absolute;
+    top: 180px;
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png") !important;
-    background-repeat: no-repeat !important;
-    background-position: center center !important;
-    background-size: 280px auto !important;
-    opacity: 0.35 !important;
-    pointer-events: none !important;
-    z-index: 1 !important;
+
+    background-image: url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size:  min(72vw, 340px) auto;
+
+    opacity: 0.30;
+    pointer-events: none;
+    z-index: 0;
 }
 
-/* 5. Hacemos que las tarjetas del administrador tengan transparencia para que el escudo brille igual */
-#adminScreen .card, 
-#adminScreen > div {
-    background-color: rgba(255, 255, 255, 0.12) !important;
+/* El contenido siempre queda delante del escudo */
+#adminScreen > *,
+#studentScreen > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* El escudo no debe tapar los botones */
+#adminScreen button,
+#studentScreen button {
+    position: relative;
+    z-index: 2;
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 480px) {
+    #adminScreen::before,
+    #studentScreen::before {
+        top: 180px;
+        background-size: 280px auto;
+        background-position: center center;
+        opacity: 0.30;
+    }
 }
