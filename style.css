@@ -542,16 +542,22 @@ flex-shrink: 0;
 }
 
 
-/* ===== ESCUDO DE FONDO ===== */
 
-#adminScreen,
-#studentScreen {
-    position: relative;
-    isolation: isolate;
+/* Imagen del escudo en el administrador */
+#adminScreen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 300px auto;
+    opacity: 0.45;
+    pointer-events: none;
+    z-index: -1;
 }
 
-/* Imagen del escudo */
-#adminScreen::before,
+/* Imagen del escudo en el estudiante */
 #studentScreen::before {
     content: "";
     position: absolute;
