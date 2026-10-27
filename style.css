@@ -540,29 +540,35 @@ flex-shrink: 0;
     font-size: 12px;
     font-weight: bold;
 }
-/* 1. Limpiamos los pseudo-elementos anteriores para evitar conflictos */
+
+/* ===== ESCUDO NÍTIDO EN LOS PANELES ===== */
+
+/* Evitamos que los pseudo-elementos anteriores interfieran */
 #adminScreen::before,
 #studentScreen::before {
     display: none !important;
 }
 
-/* 2. Convertimos las pantallas enteras en el contenedor del escudo nítido */
-#adminScreen, 
+/* Fondo azul con escudo nítido */
+#adminScreen,
 #studentScreen {
     position: relative !important;
-    background-image: linear-gradient(to bottom, #0055ff, #0022aa), url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png") !important;
-    background-repeat: no-repeat !important;
-    background-position: center center !important;
-    background-size: 320px auto !important; /* Tamaño perfecto para que se note claro */
-    background-blend-mode: overlay !important; /* Mezcla elegante para que no desentone con el azul */
+    background-color: #0033bb !important;
+    background-image:
+        url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png"),
+        linear-gradient(to bottom, #0055ff, #0022aa) !important;
+    background-repeat: no-repeat, no-repeat !important;
+    background-position: center center, center center !important;
+    background-size: 320px auto, 100% 100% !important;
+    background-blend-mode: normal !important;
 }
 
-/* 3. Ajustamos las tarjetas grandes del panel para que dejen lucir el escudo sutilmente por detrás */
-#adminScreen .card, 
+/* Tarjetas transparentes para dejar ver el escudo */
+#adminScreen .card,
 #studentScreen .card,
-#adminScreen > div, 
+#adminScreen > div,
 #studentScreen > div {
-    background-color: rgba(255, 255, 255, 0.15) !important; /* Fondo translúcido tipo cristal */
-    backdrop-filter: blur(8px); /* Efecto difuminado moderno alrededor */
-    -webkit-backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
