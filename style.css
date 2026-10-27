@@ -579,3 +579,35 @@ flex-shrink: 0;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
 }
+
+/* ===== ESCUDO DEL PANEL ESTUDIANTE ===== */
+
+#studentScreen {
+    position: relative;
+    isolation: isolate;
+}
+
+#studentScreen::before {
+    content: "";
+    position: absolute;
+    top: 250px;
+    left: 0;
+    right: 0;
+    bottom: 80px;
+
+    background-image: url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 280px auto;
+
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Mantener el contenido delante del escudo */
+#studentScreen > * {
+    position: relative;
+    z-index: 1;
+}
+
