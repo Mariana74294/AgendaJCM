@@ -541,7 +541,7 @@ flex-shrink: 0;
     font-weight: bold;
 }
 
-/* Escudo claro y nítido para el Administrador */
+/* Configuración limpia para el escudo en el Administrador */
 #adminScreen {
     position: relative !important;
 }
@@ -553,12 +553,12 @@ flex-shrink: 0;
     background-repeat: no-repeat !important;
     background-position: center center !important;
     background-size: 300px auto !important;
-    opacity: 0.35 !important; /* Un toque más visible para que resalte hermoso */
+    opacity: 0.35 !important; /* <--- AQUÍ CONTROLAS LA OPACIDAD: Sube o baja este número (ej. 0.3 o 0.4) según qué tan claro lo quieras */
     pointer-events: none !important;
-    z-index: 5 !important; /* Subimos el escudo para que esté por encima del fondo */
+    z-index: 0 !important;
 }
 
-/* Escudo idéntico para el Estudiante */
+/* Configuración limpia para el escudo en el Estudiante */
 #studentScreen {
     position: relative !important;
 }
@@ -570,22 +570,22 @@ flex-shrink: 0;
     background-repeat: no-repeat !important;
     background-position: center center !important;
     background-size: 300px auto !important;
-    opacity: 0.35 !important; /* Mismo valor exacto */
+    opacity: 0.35 !important; /* <--- Mismo nivel de opacidad para ambos */
     pointer-events: none !important;
-    z-index: 5 !important; /* Mismo nivel para ambos */
+    z-index: 0 !important;
 }
 
-/* El contenido general va por encima del escudo */
+/* El contenido y las tarjetas se colocan encima con un fondo suave para que las letras no se pierdan */
 #adminScreen > *,
 #studentScreen > * {
     position: relative !important;
-    z-index: 10 !important;
+    z-index: 2 !important;
 }
 
-/* Hacemos que la tarjeta grande de actividades sea un poco translúcida para que el escudo luzca detrás sin borrarse */
+/* Hacemos que las tarjetas principales tengan un fondo ligeramente translúcido para proteger la lectura */
 #adminScreen .card, 
 #studentScreen .card,
-#adminScreen > div,
-#studentScreen > div {
-    background-color: rgba(255, 255, 255, 0.15) !important; 
+#adminScreen > div > div {
+    background-color: rgba(255, 255, 255, 0.12) !important; /* Fondo cristal para resaltar las letras */
+    backdrop-filter: blur(4px);
 }
