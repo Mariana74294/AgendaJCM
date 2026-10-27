@@ -558,6 +558,23 @@ flex-shrink: 0;
     z-index: 0 !important;
 }
 
+/* Escudo claro y nítido para el Administrador */
+#adminScreen {
+    position: relative !important;
+}
+#adminScreen::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background-image: url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png") !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: 300px auto !important;
+    opacity: 0.25 !important; /* Opacidad ideal para que se vea claro y nítido */
+    pointer-events: none !important;
+    z-index: 1 !important;
+}
+
 /* Escudo idéntico para el Estudiante */
 #studentScreen {
     position: relative !important;
@@ -570,23 +587,14 @@ flex-shrink: 0;
     background-repeat: no-repeat !important;
     background-position: center center !important;
     background-size: 300px auto !important;
-    opacity: 0.30 !important; /* Mismo valor exacto */
+    opacity: 0.25 !important; /* Mismo valor exacto para que ambos sean iguales */
     pointer-events: none !important;
-    z-index: 0 !important;
+    z-index: 1 !important;
 }
 
-/* Contenido por encima de los escudos en ambos paneles */
+/* El contenido y las tarjetas se colocan siempre por encima del escudo */
 #adminScreen > *,
 #studentScreen > * {
     position: relative !important;
     z-index: 2 !important;
-}
-
-/* Unificamos el fondo translúcido de las tarjetas en ambos paneles para que dejen lucir el escudo igual */
-#adminScreen .card, 
-#studentScreen .card,
-#adminScreen > div > div,
-#studentScreen > div > div {
-    background-color: rgba(255, 255, 255, 0.12) !important;
-    backdrop-filter: blur(4px);
 }
