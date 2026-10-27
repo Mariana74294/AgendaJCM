@@ -543,6 +543,7 @@ flex-shrink: 0;
 
 
 
+
 /* Imagen del escudo en el administrador */
 #adminScreen::before {
     content: "";
@@ -554,8 +555,15 @@ flex-shrink: 0;
     background-size: 300px auto;
     opacity: 1;
     pointer-events: none;
-    z-index: -1;
+    z-index: 0;
 }
+
+/* Contenido del administrador por encima del escudo */
+#adminScreen > * {
+    position: relative;
+    z-index: 1;
+}
+
 
 /* Imagen del escudo en el estudiante */
 #studentScreen::before {
