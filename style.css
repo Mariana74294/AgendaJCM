@@ -540,31 +540,31 @@ flex-shrink: 0;
     font-size: 12px;
     font-weight: bold;
 }
-
-/* Configuración base compartida para los escudos en ambos paneles */
-#adminScreen, #studentScreen {
-    position: relative; /* Obligatorio para que el absolute del ::before se confine aquí */
-    overflow: hidden;   /* Evita que el escudo sobresalga de la pantalla */
+/* Asegurar que las pantallas sean el contenedor de referencia */
+#adminScreen, 
+#studentScreen {
+    position: relative !important;
+    overflow: hidden !important;
 }
 
 /* Imagen del escudo unificada para administrador y estudiante */
 #adminScreen::before,
 #studentScreen::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png");
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 300px auto;
-    opacity: 0.25;          /* Transparencia ideal para que se vea claro y nítido (ni muy oscuro ni invisible) */
-    pointer-events: none;   /* Permite hacer clic en los botones y textos de encima */
-    z-index: 0;             /* Se coloca en la capa base del contenedor */
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background-image: url("https://raw.githubusercontent.com/Mariana74294/AgendaJCM/main/Firefly_RemoveBackground.png") !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: 300px auto !important;
+    opacity: 0.35 !important;          /* Subimos un poquito más la opacidad para que resalte más */
+    pointer-events: none !important;
+    z-index: 1 !important;             /* Lo ponemos en una capa superior al fondo */
 }
 
-/* Asegurar que todo el contenido interno de ambas pantallas esté por encima del escudo */
+/* Forzar que todo el contenido esté por encima del escudo */
 #adminScreen > *,
 #studentScreen > * {
-    position: relative;
-    z-index: 1;
+    position: relative !important;
+    z-index: 2 !important;
 }
