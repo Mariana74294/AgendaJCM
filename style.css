@@ -553,7 +553,7 @@ flex-shrink: 0;
     background-repeat: no-repeat !important;
     background-position: center center !important;
     background-size: 300px auto !important;
-    opacity: 0.35 !important; /* <--- AQUÍ CONTROLAS LA OPACIDAD: Sube o baja este número (ej. 0.3 o 0.4) según qué tan claro lo quieras */
+    opacity: 0.20 !important; /* <--- AQUÍ CONTROLAS LA OPACIDAD: Sube o baja este número (ej. 0.3 o 0.4) según qué tan claro lo quieras */
     pointer-events: none !important;
     z-index: 0 !important;
 }
@@ -570,7 +570,7 @@ flex-shrink: 0;
     background-repeat: no-repeat !important;
     background-position: center center !important;
     background-size: 300px auto !important;
-    opacity: 0.35 !important; /* <--- Mismo nivel de opacidad para ambos */
+    opacity: 0.20 !important; /* <--- Mismo nivel de opacidad para ambos */
     pointer-events: none !important;
     z-index: 0 !important;
 }
