@@ -1,17 +1,71 @@
 /* =================================================
-   DATOS
+   AGENDA ESTUDIANTIL - FIREBASE
+   Inicio de sesión con nombre de usuario y contraseña.
+   No solicita correos personales.
+================================================= */
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+    deleteUser
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    addDoc,
+    collection,
+    query,
+    where,
+    onSnapshot,
+    runTransaction,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+
+/* =================================================
+   CONFIGURACIÓN FIREBASE
+================================================= */
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAG9aC6t-4zFtSfIuFx24RXK-GcKp9Z6KY",
+    authDomain: "agenda-estudiantil-3e385.firebaseapp.com",
+    projectId: "agenda-estudiantil-3e385",
+    storageBucket: "agenda-estudiantil-3e385.firebasestorage.app",
+    messagingSenderId: "747404004067",
+    appId: "1:747404004067:web:c3d226cddf3c01d31293d6"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/*
+  Firebase Authentication exige un correo para el método
+  correo/contraseña. Generamos uno técnico por usuario.
+  No es un correo personal ni recibe mensajes.
+*/
+const DOMINIO_INTERNO = "usuarios.agendaestudiantil.com";
+
+function usuarioAEmail(usuario) {
+    return `${usuario.trim().toLowerCase()}@${DOMINIO_INTERNO}`;
+}
+
+function normalizarUsuario(usuario) {
+    return usuario.trim().toLowerCase();
+}
+
+/* =================================================
+   ESTADO
 ================================================= */
 
 let usuarioActual = null;
-
-let cuentas = JSON.parse(
-    localStorage.getItem("agendaCuentas") || "[]"
-);
-
-let tareas = JSON.parse(
-    localStorage.getItem("agendaTareas") || "[]"
-);
-
+let detenerEscuchaTareas = null;
+let procesandoRegistro = false;
 
 /* =================================================
    MATERIAS POR CURSO
@@ -19,689 +73,553 @@ let tareas = JSON.parse(
 
 const materiasPorCurso = {
     "1ro": [
-        "Lenguaje",
-        "Lengua Extranjera",
-        "Ciencias Sociales",
-        "Educación Física y Deportes",
-        "Educación Musical",
-        "Artes Plásticas",
-        "Matemáticas",
-        "Técnica Tecnología",
-        "Biología",
-        "Religión"
+        "Lenguaje", "Lengua Extranjera", "Ciencias Sociales",
+        "Educación Física y Deportes", "Educación Musical",
+        "Artes Plásticas", "Matemáticas", "Técnica Tecnología",
+        "Biología", "Religión"
     ],
-
     "2do": [
-        "Lenguaje",
-        "Lengua Extranjera",
-        "Ciencias Sociales",
-        "Educación Física y Deportes",
-        "Educación Musical",
-        "Artes Plásticas",
-        "Matemáticas",
-        "Técnica Tecnología",
-        "Biología",
-        "Religión"
+        "Lenguaje", "Lengua Extranjera", "Ciencias Sociales",
+        "Educación Física y Deportes", "Educación Musical",
+        "Artes Plásticas", "Matemáticas", "Técnica Tecnología",
+        "Biología", "Religión"
     ],
-
     "3ro": [
-        "Comunicación y Lenguajes",
-        "Lengua Extranjera",
-        "Ciencias Sociales",
-        "Educación Física y Deportes",
-        "Educación Musical",
-        "Artes Plásticas",
-        "Matemáticas",
-        "Técnica Tecnología",
-        "Física",
-        "Química",
-        "Biología",
-        "Filosofías y Psicologías",
-        "Religión"
+        "Comunicación y Lenguajes", "Lengua Extranjera",
+        "Ciencias Sociales", "Educación Física y Deportes",
+        "Educación Musical", "Artes Plásticas", "Matemáticas",
+        "Técnica Tecnología", "Física", "Química", "Biología",
+        "Filosofías y Psicologías", "Religión"
     ],
-
     "4to": [
-        "Comunicación y Lenguajes",
-        "Lengua Extranjera",
-        "Ciencias Sociales",
-        "Educación Física y Deportes",
-        "Educación Musical",
-        "Artes Plásticas",
-        "Matemáticas",
-        "Técnica Tecnología",
-        "Física",
-        "Química",
-        "Biología",
-        "Filosofías y Psicologías",
-        "Religión"
+        "Comunicación y Lenguajes", "Lengua Extranjera",
+        "Ciencias Sociales", "Educación Física y Deportes",
+        "Educación Musical", "Artes Plásticas", "Matemáticas",
+        "Técnica Tecnología", "Física", "Química", "Biología",
+        "Filosofías y Psicologías", "Religión"
     ],
-
     "5to": [
-        "Comunicación y Lenguajes",
-        "Lengua Extranjera",
-        "Ciencias Sociales",
-        "Educación Física y Deportes",
-        "Educación Musical",
-        "Artes Plásticas",
-        "Matemáticas",
-        "Técnica Tecnología",
-        "Física",
-        "Química",
-        "Biología",
-        "Filosofías y Psicologías",
-        "Religión"
+        "Comunicación y Lenguajes", "Lengua Extranjera",
+        "Ciencias Sociales", "Educación Física y Deportes",
+        "Educación Musical", "Artes Plásticas", "Matemáticas",
+        "Técnica Tecnología", "Física", "Química", "Biología",
+        "Filosofías y Psicologías", "Religión"
     ],
-
     "6to": [
-        "Comunicación y Lenguajes",
-        "Lengua Extranjera",
-        "Ciencias Sociales",
-        "Educación Física y Deportes",
-        "Educación Musical",
-        "Artes Plásticas",
-        "Matemáticas",
-        "Técnica Tecnología",
-        "Física",
-        "Química",
-        "Biología",
-        "Filosofías y Psicologías",
-        "Religión"
+        "Comunicación y Lenguajes", "Lengua Extranjera",
+        "Ciencias Sociales", "Educación Física y Deportes",
+        "Educación Musical", "Artes Plásticas", "Matemáticas",
+        "Técnica Tecnología", "Física", "Química", "Biología",
+        "Filosofías y Psicologías", "Religión"
     ]
 };
 
+/* =================================================
+   MENSAJES DE ERROR
+================================================= */
+
+function mensajeError(error) {
+    const codigo = error?.code || "";
+
+    const mensajes = {
+        "auth/email-already-in-use": "Ese nombre de usuario ya está registrado. Elige otro.",
+        "auth/weak-password": "La contraseña debe tener al menos 6 caracteres.",
+        "auth/invalid-email": "El nombre de usuario no es válido.",
+        "auth/invalid-credential": "Usuario o contraseña incorrectos.",
+        "auth/user-not-found": "Usuario o contraseña incorrectos.",
+        "auth/wrong-password": "Usuario o contraseña incorrectos.",
+        "auth/network-request-failed": "No se pudo conectar. Revisa tu conexión a internet.",
+        "permission-denied": "Firebase no permitió esta operación. Revisa las reglas de Firestore.",
+        "unavailable": "El servicio no está disponible. Intenta nuevamente."
+    };
+
+    return mensajes[codigo] || error?.message || "Ocurrió un error. Intenta nuevamente.";
+}
 
 /* =================================================
    REGISTRO
 ================================================= */
 
-document.getElementById("registerForm")
-.addEventListener("submit", function(e) {
-
+document.getElementById("registerForm").addEventListener("submit", async function(e) {
     e.preventDefault();
+    if (procesandoRegistro) return;
 
-    const nombre =
-        document.getElementById("nombre").value.trim();
-
-    const usuario =
-        document.getElementById("usuario").value.trim();
-
-    const correo =
-        document.getElementById("correo").value.trim();
-
-    const curso =
-        document.getElementById("curso").value;
-
-    const paralelo =
-        document.getElementById("paralelo").value;
-
-    const opcionTipo =
-        document.querySelector('input[name="tipo"]:checked');
-
-    const password =
-        document.getElementById("password").value;
+    const nombre = document.getElementById("nombre").value.trim();
+    const usuario = normalizarUsuario(document.getElementById("usuario").value);
+    const curso = document.getElementById("curso").value;
+    const paralelo = document.getElementById("paralelo").value;
+    const opcionTipo = document.querySelector('input[name="tipo"]:checked');
+    const password = document.getElementById("password").value;
 
     if (!opcionTipo) {
         alert("Selecciona si eres estudiante o administrador.");
         return;
     }
 
-    const tipo = opcionTipo.value;
-
-    if (cuentas.some(c =>
-        c.usuario.toLowerCase() === usuario.toLowerCase()
-    )) {
-        alert("Ese usuario ya existe. Elige otro.");
+    if (!/^[a-z0-9._-]{3,20}$/.test(usuario)) {
+        alert("El usuario debe tener entre 3 y 20 caracteres y solo puede incluir letras sin tilde, números, punto, guion o guion bajo.");
         return;
     }
 
-    const nuevaCuenta = {
-        id: Date.now(),
-        nombre,
-        usuario,
-        correo,
-        curso,
-        paralelo,
-        tipo,
-        password
-    };
+    if (password.length < 6) {
+        alert("La contraseña debe tener al menos 6 caracteres.");
+        return;
+    }
 
-    cuentas.push(nuevaCuenta);
+    // Los nuevos registros siempre empiezan como estudiante.
+    // El responsable del proyecto podrá promover administradores manualmente.
+    const solicitabaAdmin = opcionTipo.value === "administrador";
+    const emailInterno = usuarioAEmail(usuario);
+    const refUsuario = doc(db, "usernameIndex", usuario);
 
-    localStorage.setItem(
-        "agendaCuentas",
-        JSON.stringify(cuentas)
-    );
+    procesandoRegistro = true;
 
-    usuarioActual = nuevaCuenta;
+    try {
+        const existente = await getDoc(refUsuario);
+        if (existente.exists()) {
+            alert("Ese nombre de usuario ya existe. Elige otro.");
+            return;
+        }
 
-    alert("¡Cuenta creada correctamente! 🎉");
+        const credencial = await createUserWithEmailAndPassword(auth, emailInterno, password);
+        const uid = credencial.user.uid;
 
-    mostrarPanel();
+        try {
+            await runTransaction(db, async (transaction) => {
+                const registroUsuario = await transaction.get(refUsuario);
+
+                if (registroUsuario.exists()) {
+                    throw new Error("USERNAME_TAKEN");
+                }
+
+                transaction.set(refUsuario, {
+                    uid,
+                    username: usuario
+                });
+
+                transaction.set(doc(db, "users", uid), {
+                    uid,
+                    nombre,
+                    usuario,
+                    curso,
+                    paralelo,
+                    role: "estudiante",
+                    createdAt: serverTimestamp()
+                });
+            });
+        } catch (errorTransaccion) {
+            await deleteUser(credencial.user).catch(() => {});
+            throw errorTransaccion;
+        }
+
+        usuarioActual = {
+            uid,
+            nombre,
+            usuario,
+            curso,
+            paralelo,
+            role: "estudiante"
+        };
+
+        document.getElementById("registerForm").reset();
+
+        if (solicitabaAdmin) {
+            alert("Tu cuenta se creó como estudiante. Para activar permisos de administrador, el responsable de Agenda Estudiantil debe autorizar tu cuenta.");
+        } else {
+            alert("¡Cuenta creada correctamente! 🎉");
+        }
+
+        mostrarPanel();
+
+    } catch (error) {
+        if (error.message === "USERNAME_TAKEN") {
+            alert("Ese nombre de usuario acaba de ser registrado. Elige otro.");
+        } else {
+            alert(mensajeError(error));
+        }
+    } finally {
+        procesandoRegistro = false;
+    }
 });
 
-
 /* =================================================
-   MOSTRAR PANEL
+   INICIO Y RESTAURACIÓN DE SESIÓN
 ================================================= */
 
-function mostrarPanel() {
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
 
+    const usuario = normalizarUsuario(document.getElementById("loginUsuario").value);
+    const password = document.getElementById("loginPassword").value;
+
+    if (!/^[a-z0-9._-]{3,20}$/.test(usuario)) {
+        alert("Escribe un nombre de usuario válido.");
+        return;
+    }
+
+    try {
+        await signInWithEmailAndPassword(auth, usuarioAEmail(usuario), password);
+        document.getElementById("loginForm").reset();
+    } catch (error) {
+        alert(mensajeError(error));
+    }
+});
+
+onAuthStateChanged(auth, async (firebaseUser) => {
+    // Durante el registro, el perfil de Firestore todavía puede estar creándose.
+    // El registro muestra el panel manualmente cuando termina la transacción.
+    if (procesandoRegistro) return;
+
+    if (!firebaseUser) {
+        usuarioActual = null;
+        detenerEscucha();
+        ocultarPaneles();
+        document.getElementById("registerScreen").classList.remove("hidden");
+        return;
+    }
+
+    try {
+        const perfil = await getDoc(doc(db, "users", firebaseUser.uid));
+
+        if (!perfil.exists()) {
+            await signOut(auth);
+            alert("No se encontró el perfil de esta cuenta. Contacta al responsable de la aplicación.");
+            return;
+        }
+
+        usuarioActual = { ...perfil.data(), uid: firebaseUser.uid };
+        mostrarPanel();
+    } catch (error) {
+        alert(mensajeError(error));
+    }
+});
+
+/* =================================================
+   MOSTRAR PANELES
+================================================= */
+
+function ocultarPaneles() {
+    ["registerScreen", "loginScreen", "adminScreen", "studentScreen"]
+        .forEach(id => document.getElementById(id).classList.add("hidden"));
+    cerrarModal();
+}
+
+function detenerEscucha() {
+    if (detenerEscuchaTareas) {
+        detenerEscuchaTareas();
+        detenerEscuchaTareas = null;
+    }
+}
+
+function mostrarPanel() {
     if (!usuarioActual) return;
 
-    document.getElementById("registerScreen")
-        .classList.add("hidden");
+    ocultarPaneles();
 
-    document.getElementById("loginScreen")
-        .classList.add("hidden");
-
-    document.getElementById("adminScreen")
-        .classList.add("hidden");
-
-    document.getElementById("studentScreen")
-        .classList.add("hidden");
-
-    cerrarModal();
-
-    if (usuarioActual.tipo === "administrador") {
-
-        document.getElementById("adminScreen")
-            .classList.remove("hidden");
-
-        document.getElementById("adminName")
-            .textContent = usuarioActual.nombre;
-
-        document.getElementById("adminCourse")
-            .textContent =
-                usuarioActual.curso + " " +
-                usuarioActual.paralelo;
-
+    if (usuarioActual.role === "administrador") {
+        document.getElementById("adminScreen").classList.remove("hidden");
+        document.getElementById("adminName").textContent = usuarioActual.nombre;
+        document.getElementById("adminCourse").textContent =
+            `${usuarioActual.curso} ${usuarioActual.paralelo}`;
         cargarTareasAdmin();
-
     } else {
-
-        document.getElementById("studentScreen")
-            .classList.remove("hidden");
-
-        document.getElementById("studentName")
-            .textContent = usuarioActual.nombre;
-
-        document.getElementById("studentCourse")
-            .textContent =
-                usuarioActual.curso + " " +
-                usuarioActual.paralelo;
-
+        document.getElementById("studentScreen").classList.remove("hidden");
+        document.getElementById("studentName").textContent = usuarioActual.nombre;
+        document.getElementById("studentCourse").textContent =
+            `${usuarioActual.curso} ${usuarioActual.paralelo}`;
         cargarTareasEstudiante();
     }
 }
 
-
 /* =================================================
-   ADMIN — ABRIR Y CERRAR MODAL
+   ADMIN — MODAL
 ================================================= */
 
 function abrirModal() {
-
-    if (!usuarioActual ||
-        usuarioActual.tipo !== "administrador") {
+    if (!usuarioActual || usuarioActual.role !== "administrador") {
+        alert("Tu cuenta no tiene permisos de administrador.");
         return;
     }
 
     const selector = document.getElementById("taskSubject");
+    selector.innerHTML = '<option value="">Seleccionar materia</option>';
 
-    selector.innerHTML =
-        '<option value="">Seleccionar materia</option>';
-
-    const materias =
-        materiasPorCurso[usuarioActual.curso] || [];
-
-    materias.forEach(function(materia) {
-
+    (materiasPorCurso[usuarioActual.curso] || []).forEach(materia => {
         const opcion = document.createElement("option");
-
         opcion.value = materia;
         opcion.textContent = materia;
-
         selector.appendChild(opcion);
     });
 
-    document.getElementById("taskModal")
-        .classList.remove("hidden");
+    document.getElementById("taskModal").classList.remove("hidden");
 }
-
 
 function cerrarModal() {
-
-    document.getElementById("taskModal")
-        .classList.add("hidden");
+    document.getElementById("taskModal").classList.add("hidden");
 }
 
-
 /* =================================================
-   ADMIN — CREAR TAREA
+   ADMIN — CREAR TAREA EN FIRESTORE
 ================================================= */
 
-document.getElementById("taskForm")
-.addEventListener("submit", function(e) {
-
+document.getElementById("taskForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    if (!usuarioActual ||
-        usuarioActual.tipo !== "administrador") {
-        alert("Inicia sesión como administrador para publicar.");
+    if (!usuarioActual || usuarioActual.role !== "administrador") {
+        alert("Inicia sesión con una cuenta autorizada como administrador.");
         return;
     }
 
-    const materia =
-        document.getElementById("taskSubject").value;
-
+    const materia = document.getElementById("taskSubject").value;
     if (!materia) {
         alert("Selecciona una materia.");
         return;
     }
 
     const tarea = {
-        id: Date.now(),
-
-        titulo:
-            document.getElementById("taskTitle").value.trim(),
-
-        descripcion:
-            document.getElementById("taskDescription").value.trim(),
-
+        titulo: document.getElementById("taskTitle").value.trim(),
+        descripcion: document.getElementById("taskDescription").value.trim(),
         materia,
-
-        tipo:
-            document.getElementById("taskType").value,
-
-        fecha:
-            document.getElementById("taskDate").value,
-
+        tipo: document.getElementById("taskType").value,
+        fecha: document.getElementById("taskDate").value,
         curso: usuarioActual.curso,
-
         paralelo: usuarioActual.paralelo,
-
-        completada: false
+        creadoPor: usuarioActual.uid,
+        createdAt: serverTimestamp()
     };
 
-    tareas.push(tarea);
-
-    localStorage.setItem(
-        "agendaTareas",
-        JSON.stringify(tareas)
-    );
-
-    document.getElementById("taskForm").reset();
-
-    cerrarModal();
-
-    cargarTareasAdmin();
-
-    alert("Actividad registrada correctamente. ✅");
+    try {
+        await addDoc(collection(db, "tasks"), tarea);
+        document.getElementById("taskForm").reset();
+        cerrarModal();
+        alert("Actividad registrada correctamente. ✅");
+    } catch (error) {
+        alert(mensajeError(error));
+    }
 });
-
 
 /* =================================================
    PRIORIDAD
 ================================================= */
 
 function obtenerPrioridad(fecha, completada) {
-
-    if (completada) {
-        return {
-            clase: "easy",
-            texto: "✓ Completada"
-        };
-    }
+    if (completada) return { clase: "easy", texto: "✓ Completada" };
 
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
-
     const fechaEntrega = new Date(fecha + "T00:00:00");
+    const diferencia = Math.ceil((fechaEntrega - hoy) / (1000 * 60 * 60 * 24));
 
-    const diferencia = Math.ceil(
-        (fechaEntrega - hoy) / (1000 * 60 * 60 * 24)
-    );
-
-    if (diferencia <= 1) {
-        return {
-            clase: "urgent",
-            texto: "🔴 Urgente"
-        };
-    }
-
-    if (diferencia <= 6) {
-        return {
-            clase: "medium",
-            texto: "🟠 Próxima"
-        };
-    }
-
-    return {
-        clase: "easy",
-        texto: "🟢 Con tiempo"
-    };
+    if (diferencia <= 1) return { clase: "urgent", texto: "🔴 Urgente" };
+    if (diferencia <= 6) return { clase: "medium", texto: "🟠 Próxima" };
+    return { clase: "easy", texto: "🟢 Con tiempo" };
 }
 
-
 /* =================================================
-   MOSTRAR UNA TAREA
+   MOSTRAR TAREA
 ================================================= */
 
 function crearHTMLTarea(tarea, estudiante = false) {
-
-    const prioridad = obtenerPrioridad(
-        tarea.fecha,
-        tarea.completada
-    );
+    const prioridad = obtenerPrioridad(tarea.fecha, tarea.completada);
 
     const fechaBonita = tarea.fecha
-        ? new Date(tarea.fecha + "T00:00:00")
-            .toLocaleDateString("es-BO", {
-                day: "numeric",
-                month: "long",
-                year: "numeric"
-            })
+        ? new Date(tarea.fecha + "T00:00:00").toLocaleDateString("es-BO", {
+            day: "numeric", month: "long", year: "numeric"
+        })
         : "Sin fecha";
 
+    const botonCompletar = estudiante && !tarea.completada
+        ? `<br><button class="complete-btn" onclick="completarTarea('${escapeHTML(tarea.id)}')">✓ Marcar como completada</button>`
+        : "";
+
     return `
-        <div class="task ${prioridad.clase}
-            ${tarea.completada ? "completed" : ""}">
-
+        <div class="task ${prioridad.clase} ${tarea.completada ? "completed" : ""}">
             <div class="task-header">
-                <div class="task-title">
-                    ${escapeHTML(tarea.titulo)}
-                </div>
-
-                <div class="task-type">
-                    ${escapeHTML(tarea.tipo)}
-                </div>
+                <div class="task-title">${escapeHTML(tarea.titulo)}</div>
+                <div class="task-type">${escapeHTML(tarea.tipo)}</div>
             </div>
-
-            <div class="task-subject">
-                📚 ${escapeHTML(tarea.materia || "Sin materia")}
-            </div>
-
-            ${
-                tarea.descripcion
-                    ? `<div class="task-description">
-                        ${escapeHTML(tarea.descripcion)}
-                       </div>`
-                    : ""
-            }
-
-            <div class="task-date">
-                📅 ${fechaBonita}
-            </div>
-
-            <div class="priority ${prioridad.clase}">
-                ${prioridad.texto}
-            </div>
-
-            ${
-                estudiante && !tarea.completada
-                    ? `<br>
-                       <button class="complete-btn"
-                           onclick="completarTarea(${tarea.id})">
-                           ✓ Marcar como completada
-                       </button>`
-                    : ""
-            }
+            <div class="task-subject">📚 ${escapeHTML(tarea.materia || "Sin materia")}</div>
+            ${tarea.descripcion ? `<div class="task-description">${escapeHTML(tarea.descripcion)}</div>` : ""}
+            <div class="task-date">📅 ${fechaBonita}</div>
+            <div class="priority ${prioridad.clase}">${prioridad.texto}</div>
+            ${botonCompletar}
         </div>
     `;
 }
 
-
 /* =================================================
-   AGRUPAR ACTIVIDADES POR MATERIA
+   AGRUPAR POR MATERIA
 ================================================= */
 
-function mostrarTareasPorMateria(
-    contenedor,
-    lista,
-    estudiante
-) {
-
+function mostrarTareasPorMateria(contenedor, lista, estudiante) {
     if (lista.length === 0) {
-
         contenedor.innerHTML = `
             <div style="text-align:center; padding:30px; opacity:.7">
                 📚 Todavía no hay actividades.
-            </div>
-        `;
-
+            </div>`;
         return;
     }
 
     const grupos = {};
-
-    lista.forEach(function(tarea) {
-
+    lista.forEach(tarea => {
         const materia = tarea.materia || "Sin materia";
-
-        if (!grupos[materia]) {
-            grupos[materia] = [];
-        }
-
+        if (!grupos[materia]) grupos[materia] = [];
         grupos[materia].push(tarea);
     });
 
     contenedor.innerHTML = Object.keys(grupos)
         .sort((a, b) => a.localeCompare(b, "es"))
-        .map(function(materia) {
-
+        .map(materia => {
             const actividades = grupos[materia].sort(
                 (a, b) => new Date(a.fecha) - new Date(b.fecha)
             );
-
-            const pendientes = actividades.filter(
-                tarea => !tarea.completada
-            ).length;
+            const pendientes = actividades.filter(t => !t.completada).length;
 
             return `
                 <section class="materia-group">
-
                     <h3 class="materia-heading">
                         <span>📚 ${escapeHTML(materia)}</span>
-
-                        ${
-                            pendientes > 0
-                                ? `<span class="materia-badge">
-                                    ${pendientes}
-                                   </span>`
-                                : ""
-                        }
+                        ${pendientes > 0 ? `<span class="materia-badge">${pendientes}</span>` : ""}
                     </h3>
-
                     <div class="task-list">
-                        ${actividades.map(tarea =>
-                            crearHTMLTarea(tarea, estudiante)
-                        ).join("")}
+                        ${actividades.map(tarea => crearHTMLTarea(tarea, estudiante)).join("")}
                     </div>
-
-                </section>
-            `;
-        })
-        .join("");
+                </section>`;
+        }).join("");
 }
 
-
 /* =================================================
-   ADMIN — MOSTRAR SUS TAREAS
+   ADMIN — ESCUCHAR TAREAS DE SU CURSO
 ================================================= */
 
 function cargarTareasAdmin() {
-
     if (!usuarioActual) return;
+    detenerEscucha();
 
-    const contenedor = document.getElementById("adminTasks");
-
-    const misTareas = tareas.filter(t =>
-        t.curso === usuarioActual.curso &&
-        t.paralelo === usuarioActual.paralelo
+    const q = query(
+        collection(db, "tasks"),
+        where("curso", "==", usuarioActual.curso),
+        where("paralelo", "==", usuarioActual.paralelo)
     );
 
-    mostrarTareasPorMateria(
-        contenedor,
-        misTareas,
-        false
-    );
+    detenerEscuchaTareas = onSnapshot(q, snapshot => {
+        const lista = snapshot.docs.map(d => ({ id: d.id, ...d.data(), completada: false }));
+        lista.sort((a, b) => (a.fecha || "").localeCompare(b.fecha || ""));
+        mostrarTareasPorMateria(document.getElementById("adminTasks"), lista, false);
+    }, error => alert(mensajeError(error)));
 }
 
-
 /* =================================================
-   ESTUDIANTE — MOSTRAR SUS TAREAS
+   ESTUDIANTE — TAREAS Y COMPLETADO PERSONAL
 ================================================= */
 
-function cargarTareasEstudiante() {
-
+async function cargarTareasEstudiante() {
     if (!usuarioActual) return;
+    detenerEscucha();
 
-    const contenedor = document.getElementById("studentTasks");
-
-    const misTareas = tareas.filter(t =>
-        t.curso === usuarioActual.curso &&
-        t.paralelo === usuarioActual.paralelo
+    const uid = usuarioActual.uid;
+    const q = query(
+        collection(db, "tasks"),
+        where("curso", "==", usuarioActual.curso),
+        where("paralelo", "==", usuarioActual.paralelo)
     );
 
-    document.getElementById("totalTasks").textContent =
-        misTareas.length;
+    detenerEscuchaTareas = onSnapshot(q, async snapshot => {
+        try {
+            const tareasUsuario = await Promise.all(snapshot.docs.map(async documento => {
+                const referenciaCompletado = doc(db, "tasks", documento.id, "completions", uid);
+                const completado = await getDoc(referenciaCompletado);
 
-    document.getElementById("pendingTasks").textContent =
-        misTareas.filter(t => !t.completada).length;
+                return {
+                    id: documento.id,
+                    ...documento.data(),
+                    completada: completado.exists() && completado.data().completada === true
+                };
+            }));
 
-    document.getElementById("doneTasks").textContent =
-        misTareas.filter(t => t.completada).length;
+            tareasUsuario.sort((a, b) => (a.fecha || "").localeCompare(b.fecha || ""));
 
-    mostrarTareasPorMateria(
-        contenedor,
-        misTareas,
-        true
-    );
+            document.getElementById("totalTasks").textContent = tareasUsuario.length;
+            document.getElementById("pendingTasks").textContent =
+                tareasUsuario.filter(t => !t.completada).length;
+            document.getElementById("doneTasks").textContent =
+                tareasUsuario.filter(t => t.completada).length;
+
+            mostrarTareasPorMateria(
+                document.getElementById("studentTasks"),
+                tareasUsuario,
+                true
+            );
+        } catch (error) {
+            alert(mensajeError(error));
+        }
+    }, error => alert(mensajeError(error)));
 }
 
+async function completarTarea(id) {
+    if (!usuarioActual || usuarioActual.role !== "estudiante") return;
 
-/* =================================================
-   COMPLETAR TAREA
-================================================= */
-
-function completarTarea(id) {
-
-    if (!usuarioActual ||
-        usuarioActual.tipo !== "estudiante") {
-        return;
+    try {
+        await setDoc(
+            doc(db, "tasks", id, "completions", usuarioActual.uid),
+            {
+                uid: usuarioActual.uid,
+                completada: true,
+                updatedAt: serverTimestamp()
+            }
+        );
+    } catch (error) {
+        alert(mensajeError(error));
     }
-
-    const tarea = tareas.find(t => t.id === id);
-
-    if (!tarea) return;
-
-    if (
-        tarea.curso !== usuarioActual.curso ||
-        tarea.paralelo !== usuarioActual.paralelo
-    ) {
-        return;
-    }
-
-    tarea.completada = true;
-
-    localStorage.setItem(
-        "agendaTareas",
-        JSON.stringify(tareas)
-    );
-
-    cargarTareasEstudiante();
 }
 
-
 /* =================================================
-   CAMBIAR ENTRE REGISTRO E INICIO DE SESIÓN
+   CAMBIAR ENTRE REGISTRO E INICIO
 ================================================= */
 
 function mostrarLogin() {
-
-    document.getElementById("registerScreen")
-        .classList.add("hidden");
-
-    document.getElementById("loginScreen")
-        .classList.remove("hidden");
+    document.getElementById("registerScreen").classList.add("hidden");
+    document.getElementById("loginScreen").classList.remove("hidden");
 }
-
 
 function mostrarRegistro() {
-
-    document.getElementById("loginScreen")
-        .classList.add("hidden");
-
-    document.getElementById("registerScreen")
-        .classList.remove("hidden");
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("registerScreen").classList.remove("hidden");
 }
-
-
-/* =================================================
-   INICIAR SESIÓN
-================================================= */
-
-document.getElementById("loginForm")
-.addEventListener("submit", function(e) {
-
-    e.preventDefault();
-
-    const usuario =
-        document.getElementById("loginUsuario").value.trim();
-
-    const password =
-        document.getElementById("loginPassword").value;
-
-    const cuenta = cuentas.find(c =>
-        c.usuario.toLowerCase() === usuario.toLowerCase() &&
-        c.password === password
-    );
-
-    if (!cuenta) {
-        alert("Usuario o contraseña incorrectos. ❌");
-        return;
-    }
-
-    usuarioActual = cuenta;
-
-    mostrarPanel();
-});
-
 
 /* =================================================
    CERRAR SESIÓN
 ================================================= */
 
-function cerrarSesion() {
-
-    usuarioActual = null;
-
+async function cerrarSesion() {
     cerrarModal();
-
-    document.getElementById("adminScreen")
-        .classList.add("hidden");
-
-    document.getElementById("studentScreen")
-        .classList.add("hidden");
-
-    document.getElementById("loginScreen")
-        .classList.add("hidden");
-
-    document.getElementById("registerScreen")
-        .classList.remove("hidden");
+    try {
+        await signOut(auth);
+    } catch (error) {
+        alert(mensajeError(error));
+    }
 }
 
-
 /* =================================================
-   PROTEGER TEXTO MOSTRADO
+   PROTEGER TEXTO
 ================================================= */
 
-function escapeHTML(text) {
-
-    return String(text)
+function escapeHTML(texto) {
+    return String(texto ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
-       }
+}
+
+/* =================================================
+   FUNCIONES USADAS POR onclick EN index.html
+================================================= */
+
+window.mostrarLogin = mostrarLogin;
+window.mostrarRegistro = mostrarRegistro;
+window.abrirModal = abrirModal;
+window.cerrarModal = cerrarModal;
+window.cerrarSesion = cerrarSesion;
+window.completarTarea = completarTarea;
