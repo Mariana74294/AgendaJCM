@@ -288,6 +288,7 @@ onAuthStateChanged(auth, async (firebaseUser) => {
         }
 
         usuarioActual = { ...perfil.data(), uid: firebaseUser.uid };
+mostrarPanel();
 
 
 
