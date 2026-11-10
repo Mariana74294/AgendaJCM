@@ -289,7 +289,7 @@ onAuthStateChanged(auth, async (firebaseUser) => {
 
         usuarioActual = { ...perfil.data(), uid: firebaseUser.uid };
 
-alert("ROL QUE LEE LA APLICACIÓN: " + usuarioActual.role);
+
 
 mostrarPanel();
     } catch (error) {
